@@ -1,0 +1,36 @@
+name: sawyun-backend
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sawyun
+      POSTGRES_PASSWORD: sawyun_password
+      POSTGRES_DB: sawyun
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sawyun -d sawyun"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: .
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://sawyun:sawyun_password@postgres:5432/sawyun
+    volumes:
+      - ./uploads:/app/uploads
+      - ./app:/app/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
