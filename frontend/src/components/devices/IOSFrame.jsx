@@ -1,4 +1,4 @@
-export default function IOSFrame({ width = 320, height = 660, screenshot, alt = '', children }) {
+export default function IOSFrame({ width = 320, height = 660, screenshot, alt = '', focalX = 50, focalY = 50, zoom = 1, children }) {
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ export default function IOSFrame({ width = 320, height = 660, screenshot, alt = 
       }} />
       <div style={{ width: '100%', height: '100%' }}>
         {screenshot ? (
-          <img src={screenshot} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <img src={screenshot} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `${focalX}% ${focalY}%`, transform: `scale(${zoom})`, display: 'block' }} />
         ) : children}
       </div>
       <div style={{

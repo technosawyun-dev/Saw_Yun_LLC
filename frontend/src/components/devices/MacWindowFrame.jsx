@@ -9,7 +9,7 @@ function TrafficLights() {
   );
 }
 
-export default function MacWindowFrame({ width = 640, height = 420, title = 'Window', screenshot, alt = '', children }) {
+export default function MacWindowFrame({ width = 640, height = 420, title = 'Window', screenshot, alt = '', focalX = 50, focalY = 50, zoom = 1, children }) {
   return (
     <div
       style={{
@@ -32,7 +32,7 @@ export default function MacWindowFrame({ width = 640, height = 420, title = 'Win
       </div>
       <div style={{ flex: 1, overflow: 'hidden' }}>
         {screenshot ? (
-          <img src={screenshot} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <img src={screenshot} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `${focalX}% ${focalY}%`, transform: `scale(${zoom})`, display: 'block' }} />
         ) : children}
       </div>
     </div>

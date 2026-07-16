@@ -23,3 +23,6 @@ export const uploadScreenshot = (id, platform, file) => {
 
 export const deleteScreenshot = (id, screenshotId) =>
   client.delete(`/api/admin/projects/${id}/screenshots/${screenshotId}`);
+
+export const updateScreenshotPosition = (id, screenshotId, body) =>
+  client.patch(`/api/admin/projects/${id}/screenshots/${screenshotId}`, body).then((r) => r.data);

@@ -160,3 +160,19 @@ img { max-width: 100%; }
 
 .inline-link { font-weight: 700; text-decoration: none; font-size: 15; white-space: nowrap; cursor: pointer; }
 .inline-link:hover { text-decoration: underline; }
+
+/* Admin panel — button/link micro-interactions and modal entrance */
+.admin-btn { transition: transform .15s ease, box-shadow .15s ease, background .18s ease, border-color .18s ease, color .18s ease; }
+.admin-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.admin-btn:active:not(:disabled) { transform: translateY(0); }
+.admin-btn-primary:hover:not(:disabled) { box-shadow: 0 10px 24px -8px rgba(61,107,255,0.45); }
+
+.admin-nav-link { transition: background .18s ease, color .18s ease; }
+
+@keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalPopIn {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-overlay { animation: overlayFadeIn 0.18s ease both; }
+.modal-panel { animation: modalPopIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both; }

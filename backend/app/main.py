@@ -10,12 +10,14 @@ from pathlib import Path
 from app.core.config import settings
 from app.db.session import Base, engine, SessionLocal
 from app.db.init_db import init_db
+from app.db.migrate import run_startup_migrations
 from app.routes import auth, projects, messages
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    run_startup_migrations(engine)
     db = SessionLocal()
     try:
         init_db(db)

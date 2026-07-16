@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session, joinedload
 from app.db.session import get_db
 from app.models.project import Project, ProjectScreenshot
-from app.schemas.project import ProjectCreate, ProjectUpdate, ProjectSummaryOut, ProjectDetailOut, ScreenshotOut, PlatformLiteral
+from app.schemas.project import (
+    ProjectCreate, ProjectUpdate, ProjectSummaryOut, ProjectDetailOut,
+    ScreenshotOut, ScreenshotPositionUpdate, PlatformLiteral,
+)
 from app.core.deps import require_admin
 from app.services.storage import save_upload, delete_file
 
@@ -116,3 +119,18 @@ def delete_screenshot(id: int, screenshot_id: int, db: Session = Depends(get_db)
     delete_file(shot.image_url)
     db.delete(shot)
     db.commit()
+
+
+@router.patch("/api/admin/projects/{id}/screenshots/{screenshot_id}", response_model=ScreenshotOut, dependencies=[Depends(require_admin)])
+def update_screenshot_position(id: int, screenshot_id: int, body: ScreenshotPositionUpdate, db: Session = Depends(get_db)):
+    shot = db.query(ProjectScreenshot).filter(
+        ProjectScreenshot.id == screenshot_id, ProjectScreenshot.project_id == id
+    ).first()
+    if not shot:
+        raise HTTPException(status_code=404, detail="Screenshot not found")
+    shot.focal_x = body.focal_x
+    shot.focal_y = body.focal_y
+    shot.zoom = body.zoom
+    db.commit()
+    db.refresh(shot)
+    return shot

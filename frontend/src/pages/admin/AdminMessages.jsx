@@ -29,7 +29,7 @@ export default function AdminMessages() {
       {!error && messages && messages.length === 0 && <div style={{ color: MUTED }}>No messages yet.</div>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {messages && messages.map((m) => (
-          <div key={m.id} style={{
+          <div key={m.id} className="hoverable-lift" style={{
             background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, padding: 20,
             borderLeft: m.is_read ? `1px solid ${LINE}` : `3px solid ${BLUE}`,
           }}>
@@ -42,8 +42,8 @@ export default function AdminMessages() {
             </div>
             <div style={{ fontSize: 14, color: NAVY, lineHeight: 1.6, whiteSpace: 'pre-wrap', marginBottom: 12 }}>{m.message}</div>
             <div style={{ display: 'flex', gap: 14 }}>
-              {!m.is_read && <button onClick={() => onMarkRead(m)} style={{ background: 'none', border: 'none', color: BLUE, fontWeight: 700, fontSize: 13, cursor: 'pointer', padding: 0 }}>Mark read</button>}
-              <button onClick={() => onDelete(m)} style={{ background: 'none', border: 'none', color: '#c0392b', fontWeight: 700, fontSize: 13, cursor: 'pointer', padding: 0 }}>Delete</button>
+              {!m.is_read && <button onClick={() => onMarkRead(m)} className="inline-link" style={{ background: 'none', border: 'none', color: BLUE, fontSize: 13, padding: 0 }}>Mark read</button>}
+              <button onClick={() => onDelete(m)} className="inline-link" style={{ background: 'none', border: 'none', color: '#c0392b', fontSize: 13, padding: 0 }}>Delete</button>
             </div>
           </div>
         ))}

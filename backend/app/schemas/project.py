@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, Literal
 from datetime import datetime
 
@@ -11,8 +11,17 @@ class ScreenshotOut(BaseModel):
     platform: str
     image_url: str
     sort_order: int
+    focal_x: float
+    focal_y: float
+    zoom: float
 
     model_config = {"from_attributes": True}
+
+
+class ScreenshotPositionUpdate(BaseModel):
+    focal_x: float = Field(ge=0, le=100)
+    focal_y: float = Field(ge=0, le=100)
+    zoom: float = Field(ge=1, le=3)
 
 
 class ProjectCreate(BaseModel):

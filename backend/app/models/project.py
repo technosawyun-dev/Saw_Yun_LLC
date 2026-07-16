@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float, func
 from sqlalchemy.orm import relationship
 from app.db.session import Base
 
@@ -30,5 +30,11 @@ class ProjectScreenshot(Base):
     platform = Column(String, nullable=False)  # ios|android|web|windows
     image_url = Column(String, nullable=False)
     sort_order = Column(Integer, default=0)
+    # Where/how the image is framed inside its device mockup, matching the
+    # CSS object-position/scale used to render it on the public site — lets
+    # the admin reposition or zoom the crop without re-uploading the image.
+    focal_x = Column(Float, nullable=False, default=50.0)
+    focal_y = Column(Float, nullable=False, default=50.0)
+    zoom = Column(Float, nullable=False, default=1.0)
 
     project = relationship("Project", back_populates="screenshots")

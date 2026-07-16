@@ -9,7 +9,7 @@ function TrafficLights() {
   );
 }
 
-export default function BrowserWindowFrame({ width = 640, height = 420, url = 'app.sawyunpos.com', screenshot, alt = '', children }) {
+export default function BrowserWindowFrame({ width = 640, height = 420, url = 'app.sawyunpos.com', screenshot, alt = '', focalX = 50, focalY = 50, zoom = 1, children }) {
   return (
     <div
       style={{
@@ -33,7 +33,7 @@ export default function BrowserWindowFrame({ width = 640, height = 420, url = 'a
       </div>
       <div style={{ flex: 1, background: '#fff', overflow: 'hidden' }}>
         {screenshot ? (
-          <img src={screenshot} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <img src={screenshot} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `${focalX}% ${focalY}%`, transform: `scale(${zoom})`, display: 'block' }} />
         ) : children}
       </div>
     </div>

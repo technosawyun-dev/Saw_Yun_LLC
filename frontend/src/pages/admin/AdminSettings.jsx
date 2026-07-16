@@ -52,8 +52,8 @@ export default function AdminSettings() {
           <label style={labelStyle}>Confirm new password</label>
           <input type="password" required style={inputStyle} value={confirm} onChange={(e) => setConfirm(e.target.value)} />
         </div>
-        {status && <div style={{ fontSize: 13.5, color: status.ok ? '#1f8a4c' : '#c0392b' }}>{status.msg}</div>}
-        <button type="submit" disabled={saving} style={{
+        {status && <div className="fade-up" style={{ fontSize: 13.5, color: status.ok ? '#1f8a4c' : '#c0392b' }}>{status.msg}</div>}
+        <button type="submit" disabled={saving} className="admin-btn admin-btn-primary" style={{
           alignSelf: 'flex-start', padding: '11px 22px', border: 'none', borderRadius: 10, background: NAVY,
           color: '#fff', fontWeight: 700, fontSize: 13.5, cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.7 : 1,
         }}>{saving ? 'Saving…' : 'Update password'}</button>

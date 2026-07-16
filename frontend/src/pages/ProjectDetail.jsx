@@ -92,10 +92,10 @@ export default function ProjectDetail() {
           <div className="case-study-grid">
             <div className="case-study-device-wrap">
               <div className="fade-up" key={platform}>
-                {platform === 'ios' && <IOSFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} alt={`${project.title} on iOS`}>{FALLBACK_MOCK.ios}</IOSFrame>}
-                {platform === 'android' && <AndroidFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} alt={`${project.title} on Android`}>{FALLBACK_MOCK.android}</AndroidFrame>}
-                {platform === 'web' && <BrowserWindowFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} alt={`${project.title} on Web`} url="app.sawyunpos.com">{FALLBACK_MOCK.web}</BrowserWindowFrame>}
-                {platform === 'windows' && <MacWindowFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} alt={`${project.title} on Windows`} title={project.title}>{FALLBACK_MOCK.windows}</MacWindowFrame>}
+                {platform === 'ios' && <IOSFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} focalX={screenshot?.focal_x ?? 50} focalY={screenshot?.focal_y ?? 50} zoom={screenshot?.zoom ?? 1} alt={`${project.title} on iOS`}>{FALLBACK_MOCK.ios}</IOSFrame>}
+                {platform === 'android' && <AndroidFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} focalX={screenshot?.focal_x ?? 50} focalY={screenshot?.focal_y ?? 50} zoom={screenshot?.zoom ?? 1} alt={`${project.title} on Android`}>{FALLBACK_MOCK.android}</AndroidFrame>}
+                {platform === 'web' && <BrowserWindowFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} focalX={screenshot?.focal_x ?? 50} focalY={screenshot?.focal_y ?? 50} zoom={screenshot?.zoom ?? 1} alt={`${project.title} on Web`} url="app.sawyunpos.com">{FALLBACK_MOCK.web}</BrowserWindowFrame>}
+                {platform === 'windows' && <MacWindowFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} focalX={screenshot?.focal_x ?? 50} focalY={screenshot?.focal_y ?? 50} zoom={screenshot?.zoom ?? 1} alt={`${project.title} on Windows`} title={project.title}>{FALLBACK_MOCK.windows}</MacWindowFrame>}
               </div>
             </div>
             <div style={{ paddingTop: 20 }}>

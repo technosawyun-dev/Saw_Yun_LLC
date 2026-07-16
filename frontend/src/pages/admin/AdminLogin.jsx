@@ -31,7 +31,7 @@ export default function AdminLogin() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: BG, padding: 24 }}>
-      <form onSubmit={onSubmit} style={{ width: '100%', maxWidth: 380, background: '#fff', border: `1px solid ${LINE}`, borderRadius: 18, padding: 36 }}>
+      <form onSubmit={onSubmit} className="fade-up" style={{ width: '100%', maxWidth: 380, background: '#fff', border: `1px solid ${LINE}`, borderRadius: 18, padding: 36 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
           <img src={logo} alt="Saw Yun" style={{ height: 32, width: 32, objectFit: 'contain' }} />
           <div>
@@ -49,8 +49,8 @@ export default function AdminLogin() {
           <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
             style={{ width: '100%', padding: '12px 14px', borderRadius: 10, border: `1px solid ${LINE}`, fontSize: 14.5, fontFamily: FONT_BODY, outline: 'none' }} />
         </div>
-        {error && <div style={{ fontSize: 13.5, color: '#c0392b', marginBottom: 16 }}>{error}</div>}
-        <button type="submit" disabled={submitting} style={{
+        {error && <div className="fade-up" style={{ fontSize: 13.5, color: '#c0392b', marginBottom: 16 }}>{error}</div>}
+        <button type="submit" disabled={submitting} className="admin-btn admin-btn-primary" style={{
           width: '100%', padding: '13px 0', border: 'none', borderRadius: 10,
           background: 'linear-gradient(135deg,#22D3EE 0%,#3D6BFF 55%,#7B2FF7 100%)', color: '#fff',
           fontWeight: 700, fontSize: 14.5, fontFamily: FONT_BODY, cursor: submitting ? 'default' : 'pointer',
