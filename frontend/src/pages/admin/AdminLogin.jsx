@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { login, isAuthed } from '../../api/auth';
 import logo from '../../assets/logo.png';
-import { NAVY, MUTED, BLUE, LINE, BG, FONT_HEAD, FONT_BODY } from '../../styles/theme';
+import { NAVY, MUTED, LINE, BG, FONT_HEAD, FONT_BODY } from '../../styles/theme';
 
 export default function AdminLogin() {
   const navigate = useNavigate();

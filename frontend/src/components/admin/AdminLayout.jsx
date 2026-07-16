@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { logout } from '../../api/auth';
-import { NAVY, MUTED, BLUE, LINE, BG, FONT_HEAD } from '../../styles/theme';
+import { NAVY, BG, FONT_HEAD } from '../../styles/theme';
 
 const NAV = [
   { to: '/admin', label: 'Dashboard', end: true },

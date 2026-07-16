@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { NAVY, MUTED, BLUE, LINE, BG, FONT_HEAD, cardStyle, cardHoverLift } from '../styles/theme';
+import { NAVY, MUTED, BLUE, LINE, BG, FONT_HEAD, cardStyle } from '../styles/theme';
 
 const PRICING = [
   {
@@ -22,10 +22,48 @@ const PRICING = [
   },
 ];
 
+const badge = (text, style = {}) => (
+  <div style={{ width: 18, height: 18, borderRadius: 5, color: '#fff', fontSize: 9.5, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Space Grotesk',sans-serif", ...style }}>{text}</div>
+);
+
 const TECH = [
-  { label: 'React', color: '#149ECA' }, { label: 'Node.js', color: '#5FA04E' }, { label: 'TypeScript', color: '#3178C6' },
-  { label: 'Swift', color: '#F05138' }, { label: 'Kotlin', color: '#8B5CF6' }, { label: 'PostgreSQL', color: '#336791' },
-  { label: 'AWS', color: '#FF9900' }, { label: 'Docker', color: '#2496ED' },
+  {
+    label: 'React',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="2.2" fill="#149ECA" />
+        <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#149ECA" strokeWidth="1.4" />
+        <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#149ECA" strokeWidth="1.4" transform="rotate(60 12 12)" />
+        <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#149ECA" strokeWidth="1.4" transform="rotate(120 12 12)" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Node.js',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L21 7V17L12 22L3 17V7L12 2Z" stroke="#5FA04E" strokeWidth="1.6" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  { label: 'TypeScript', icon: badge('TS', { background: '#3178C6', fontSize: 9.5 }) },
+  { label: 'Swift', icon: badge('S', { background: '#F05138', fontSize: 11 }) },
+  { label: 'Kotlin', icon: badge('K', { background: 'linear-gradient(135deg,#E44857,#C711E1 45%,#7F52FF)', fontSize: 10.5 }) },
+  { label: 'PostgreSQL', icon: badge('Pg', { background: '#336791', borderRadius: '50%', fontSize: 8.5 }) },
+  { label: 'AWS', icon: badge('aws', { background: '#232F3E', color: '#FF9900', width: 20, fontSize: 8 }) },
+  {
+    label: 'Docker',
+    icon: (
+      <svg width="20" height="16" viewBox="0 0 28 20" fill="none">
+        <rect x="1" y="7" width="4.5" height="4.5" fill="#2496ED" />
+        <rect x="6.5" y="7" width="4.5" height="4.5" fill="#2496ED" />
+        <rect x="12" y="7" width="4.5" height="4.5" fill="#2496ED" />
+        <rect x="6.5" y="1.5" width="4.5" height="4.5" fill="#2496ED" />
+        <rect x="12" y="1.5" width="4.5" height="4.5" fill="#2496ED" />
+        <path d="M0 12C0 12 2 15 8 15C16 15 19 12 21 8H0V12Z" fill="#2496ED" />
+      </svg>
+    ),
+  },
 ];
 
 const SERVICES = [
@@ -84,7 +122,7 @@ export default function Services() {
             {Array.from({ length: 3 }).flatMap((_, rep) =>
               TECH.map((t) => (
                 <div key={`${rep}-${t.label}`} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 20px 10px 14px', borderRadius: 100, background: '#fff', border: `1px solid ${LINE}`, fontSize: 14, fontWeight: 700, color: NAVY, whiteSpace: 'nowrap' }}>
-                  <div style={{ width: 18, height: 18, borderRadius: 5, background: t.color }} />{t.label}
+                  {t.icon}{t.label}
                 </div>
               ))
             )}

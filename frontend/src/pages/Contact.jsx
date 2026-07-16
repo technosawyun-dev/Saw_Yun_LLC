@@ -81,7 +81,7 @@ export default function Contact() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {[
-              ['EMAIL', 'hello@sawyun.com', <path key="e" d="M3 6L12 13L21 6M3 5H21V19H3V5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />],
+              ['EMAIL', 'support@sawyuntech.com', <path key="e" d="M3 6L12 13L21 6M3 5H21V19H3V5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />],
               ['LOCATION', 'Remote-first · Worldwide', <><path key="l1" d="M12 21C12 21 19 14.5 19 9.5C19 5.9 15.9 3 12 3C8.1 3 5 5.9 5 9.5C5 14.5 12 21 12 21Z" stroke="currentColor" strokeWidth="2" /><circle key="l2" cx="12" cy="9.5" r="2.5" stroke="currentColor" strokeWidth="2" /></>],
               ['RESPONSE TIME', '1–2 business days', <><path key="r1" d="M12 7V12L15.5 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><circle key="r2" cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" /></>],
             ].map(([label, value, svg]) => (

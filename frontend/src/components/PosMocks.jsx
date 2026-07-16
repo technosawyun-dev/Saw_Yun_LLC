@@ -89,7 +89,7 @@ export function POSDesktopMockSimple() {
   );
 }
 
-export function POSDesktopMockRich({ url }) {
+export function POSDesktopMockRich() {
   const items = [
     { name: 'Espresso ×2', price: '$7.00' }, { name: 'Croissant', price: '$4.25' }, { name: 'Iced Tea', price: '$3.00' },
   ];

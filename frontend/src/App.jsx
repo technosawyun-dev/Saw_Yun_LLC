@@ -7,6 +7,7 @@ import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Legal from './pages/Legal';
 
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import AdminLayout from './components/admin/AdminLayout';
@@ -17,7 +18,7 @@ import AdminProjectEditor from './pages/admin/AdminProjectEditor';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminSettings from './pages/admin/AdminSettings';
 
-import { NAVY, MUTED, BLUE, FONT_HEAD } from './styles/theme';
+import { NAVY, MUTED, FONT_HEAD } from './styles/theme';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -46,6 +47,9 @@ export default function App() {
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="/legal/:doc" element={<Legal />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
@@ -59,8 +63,6 @@ export default function App() {
             <Route path="settings" element={<AdminSettings />} />
           </Route>
         </Route>
-
-        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

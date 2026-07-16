@@ -27,8 +27,15 @@ export default function Footer() {
             <Link to="/about" style={linkStyle}>About</Link>
           </div>
           <div>
+            <div style={headingStyle}>Legal</div>
+            <Link to="/legal/terms" style={linkStyle}>Terms of Service</Link>
+            <Link to="/legal/privacy" style={linkStyle}>Privacy Policy</Link>
+            <Link to="/legal/refund" style={linkStyle}>Refund Policy</Link>
+            <Link to="/legal/eula" style={linkStyle}>EULA</Link>
+          </div>
+          <div>
             <div style={headingStyle}>Get in touch</div>
-            <div style={linkStyle}>hello@sawyun.com</div>
+            <div style={linkStyle}>support@sawyuntech.com</div>
             <div style={linkStyle}>Remote-first · Worldwide</div>
             <Link to="/contact" style={linkStyle}>Contact us →</Link>
           </div>

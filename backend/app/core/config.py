@@ -17,6 +17,21 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 10
     CORS_ORIGINS: str = "http://localhost:5173"
 
+    # Optional: email notification on new contact form submissions, sent via
+    # the Mailtrap Sending API (not raw SMTP — most VPS providers block
+    # outbound SMTP ports by default, so an HTTPS API call is what actually
+    # works in production). Leave MAILTRAP_API_TOKEN empty to disable —
+    # the message still saves to the database/admin panel either way.
+    EMAIL_ENABLED: bool = True
+    MAILTRAP_API_TOKEN: str = ""
+    EMAIL_FROM: str = "noreply@sawyun.com"
+    EMAIL_FROM_NAME: str = "Saw Yun LLC"
+    NOTIFY_TO_EMAIL: str = ""
+
+    @property
+    def email_notifications_enabled(self) -> bool:
+        return bool(self.EMAIL_ENABLED and self.MAILTRAP_API_TOKEN and self.NOTIFY_TO_EMAIL)
+
     @field_validator("SECRET_KEY")
     @classmethod
     def secret_key_must_be_strong(cls, v: str) -> str:

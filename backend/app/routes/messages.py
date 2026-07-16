@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -6,6 +6,7 @@ from app.db.session import get_db
 from app.models.message import Message
 from app.schemas.message import MessageCreate, MessageOut
 from app.core.deps import require_admin
+from app.services.email import send_contact_notification
 
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter(tags=["messages"])
@@ -15,11 +16,14 @@ router = APIRouter(tags=["messages"])
 
 @router.post("/api/contact", response_model=MessageOut, status_code=201)
 @limiter.limit("5/minute")
-def contact(request: Request, body: MessageCreate, db: Session = Depends(get_db)):
+def contact(request: Request, body: MessageCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     msg = Message(**body.model_dump())
     db.add(msg)
     db.commit()
     db.refresh(msg)
+    # Runs after the response is sent — an email provider hiccup never delays
+    # or breaks the visitor's form submission; the message is already saved.
+    background_tasks.add_task(send_contact_notification, msg.name, msg.email, msg.message)
     return msg
 
 
