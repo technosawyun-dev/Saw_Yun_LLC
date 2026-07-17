@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /home/sawyun/Saw_Yun_LLC
+cd /home/Saw_Yun_LLC
 
 echo "==> Syncing to latest main"
 # Hard reset instead of a plain `git pull` — this runs non-interactively over

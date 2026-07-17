@@ -39,6 +39,54 @@ services:
     networks:
       - internal
 
+  # -- Hourly pg_dump → ./backups/ ---------------------------------------------
+  db-backup:
+    image: prodrigestivill/postgres-backup-local
+    container_name: sawyun_db_backup
+    restart: unless-stopped
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SCHEDULE=@hourly
+      - BACKUP_KEEP_DAYS=7
+      - BACKUP_KEEP_WEEKS=4
+      - BACKUP_KEEP_MONTHS=6
+      - HEALTHCHECK_PORT=8080
+    networks:
+      - internal
+
+  # -- R2 backup uploader (rclone syncs ./backups → Cloudflare R2) --------------
+  backup-uploader:
+    image: rclone/rclone:latest
+    container_name: sawyun_backup_uploader
+    restart: unless-stopped
+    volumes:
+      - ./backups:/backups:ro
+      - ./scripts/rclone-sync.sh:/rclone-sync.sh:ro
+      - ./logs:/logs
+    depends_on:
+      - db-backup
+    environment:
+      # rclone remote config injected via env — no config file needed
+      - RCLONE_CONFIG_R2_TYPE=s3
+      - RCLONE_CONFIG_R2_PROVIDER=Cloudflare
+      - RCLONE_CONFIG_R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+      - RCLONE_CONFIG_R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+      - RCLONE_CONFIG_R2_ENDPOINT=https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com
+      - R2_BUCKET=${R2_BUCKET}
+    entrypoint: ["/bin/sh", "/rclone-sync.sh"]
+    networks:
+      - internal
+
 volumes:
   postgres_data:
 
