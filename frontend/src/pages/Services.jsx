@@ -10,7 +10,7 @@ const PRICING = [
   },
   {
     title: 'Dedicated Team',
-    desc: 'An embedded squad of engineers and designers working as an extension of your team.',
+    desc: 'An embedded team of engineers and designers working as an extension of your business.',
     items: ['Monthly billing, scale up or down', 'Direct access to your engineers', 'Shared roadmap & standups'],
     featured: true,
   },
@@ -68,12 +68,10 @@ const TECH = [
 
 const SERVICES = [
   { title: 'Custom Software Development', desc: 'End-to-end platforms designed and engineered around your exact workflow — not a generic template.' },
-  { title: 'POS & Retail Systems', desc: 'Point-of-sale software for single counters or multi-branch chains, on mobile, web, Windows and iOS.' },
   { title: 'Mobile App Development', desc: 'Native iOS and Android apps, from first prototype to app-store launch and beyond.' },
   { title: 'Web Application Development', desc: 'Fast, responsive web apps and dashboards built to scale with your users.' },
   { title: 'Desktop & Windows Applications', desc: 'Native desktop software for teams that live outside the browser.' },
   { title: 'Cloud & DevOps', desc: 'Infrastructure, CI/CD and monitoring so releases are routine, not risky.' },
-  { title: 'UI/UX Design', desc: 'Interfaces that are clear, fast to use, and consistent across every platform.' },
   { title: 'Maintenance & Support', desc: 'Ongoing fixes, updates and monitoring once your product is live in the world.' },
 ];
 

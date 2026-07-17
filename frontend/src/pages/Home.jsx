@@ -18,7 +18,7 @@ const HERO_LABELS = { ios: 'Mobile', windows: 'Windows', tablet: 'Tablet', web: 
 const SERVICES = [
   { icon: serviceIconWrapBlue, title: 'Custom Software', desc: 'Tailored systems designed around how your business actually operates.',
     path: <path d="M9 4L4 12L9 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />, path2: <path d="M15 4L20 12L15 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /> },
-  { icon: serviceIconWrapCyan, title: 'POS & Retail Systems', desc: 'Point-of-sale software for mobile, web, Windows and iOS — one system, every counter.',
+  { icon: serviceIconWrapCyan, title: 'Web Applications', desc: 'Fast, responsive web apps and dashboards built to scale with your users.',
     rect: true },
   { icon: serviceIconWrapViolet, title: 'Mobile Apps', desc: 'Native iOS and Android apps built for speed, polish and real daily use.', phone: true },
   { icon: serviceIconWrapBlue, title: 'Cloud & DevOps', desc: 'Infrastructure, deployment and monitoring so your product stays online.', cloud: true },
@@ -82,7 +82,7 @@ export default function Home() {
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', marginTop: 28 }}>
             {[
               { label: 'Custom Software', icon: serviceIconWrapBlue, svg: <><path d="M9 4L4 12L9 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M15 4L20 12L15 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></> },
-              { label: 'Mobile, Web & POS', icon: serviceIconWrapViolet, svg: <><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="currentColor" strokeWidth="2" /><path d="M11 19H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></> },
+              { label: 'Mobile, Web & Cloud', icon: serviceIconWrapViolet, svg: <><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="currentColor" strokeWidth="2" /><path d="M11 19H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></> },
               { label: 'Cloud & DevOps', icon: serviceIconWrapCyan, svg: <path d="M7 18H17.5C19.4 18 21 16.4 21 14.5C21 12.6 19.4 11 17.5 11C17.4 11 17.3 11 17.2 11C16.7 8.7 14.6 7 12 7C9.1 7 6.7 9.1 6.2 11.8C4.4 12.1 3 13.7 3 15.6C3 17.5 4.6 18 7 18Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /> },
             ].map((c) => (
               <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 18px 9px 10px', borderRadius: 100, background: '#fff', border: `1px solid ${LINE}`, fontSize: 13.5, fontWeight: 700, color: NAVY }}>

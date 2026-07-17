@@ -118,7 +118,7 @@ img { max-width: 100%; }
 .case-study-device-wrap { display: flex; justify-content: center; overflow: visible; transform-origin: top center; }
 @media (max-width: 900px) { .case-study-device-wrap { transform: scale(0.78); } }
 
-.contact-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: flex-start; }
+.contact-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: stretch; }
 @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
