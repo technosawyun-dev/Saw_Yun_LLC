@@ -66,7 +66,10 @@ def update_project(id: int, body: ProjectUpdate, db: Session = Depends(get_db)):
     project = db.query(Project).filter(Project.id == id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-    data = body.model_dump(exclude_none=True)
+    # exclude_unset (not exclude_none): a field explicitly sent as null means
+    # "clear this," and must still be applied — only fields the client never
+    # included in the request body at all should be left untouched.
+    data = body.model_dump(exclude_unset=True)
     if "slug" in data and data["slug"] != project.slug:
         if db.query(Project).filter(Project.slug == data["slug"]).first():
             raise HTTPException(status_code=400, detail="A project with this slug already exists")

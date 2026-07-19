@@ -11,8 +11,14 @@ class Project(Base):
     title = Column(String, nullable=False)
     tagline = Column(String, nullable=True)
     description = Column(Text, nullable=True)
-    status = Column(String, nullable=False, default="in_development")  # live|in_development
+    status = Column(String, nullable=False, default="in_development")  # live|live_demo|in_development
     live_demo_url = Column(String, nullable=True)
+    # Optional per-platform download links — each shows a "Download" button
+    # only when filled in, on the matching platform tab. Web has none since
+    # it's browser-based with no install.
+    download_ios_url = Column(String, nullable=True)
+    download_android_url = Column(String, nullable=True)
+    download_windows_url = Column(String, nullable=True)
     sort_order = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

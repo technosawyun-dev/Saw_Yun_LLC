@@ -136,12 +136,13 @@ export default function Contact() {
               ].map(({ label, href, Icon }) => (
                 <a
                   key={label} href={href} target="_blank" rel="noopener noreferrer"
+                  className="social-icon-pop-wrap"
                   style={{
                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, textDecoration: 'none',
                     color: NAVY, flex: '1 1 0',
                   }}
                 >
-                  <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(61,107,255,0.08)', color: BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="social-icon-pop" style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(61,107,255,0.08)', color: BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Icon size={20} />
                   </div>
                   <div style={{ fontSize: 12.5, fontWeight: 700 }}>{label}</div>

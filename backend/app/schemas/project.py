@@ -3,7 +3,7 @@ from typing import Optional, Literal
 from datetime import datetime
 
 PlatformLiteral = Literal["ios", "android", "web", "windows"]
-StatusLiteral = Literal["live", "in_development"]
+StatusLiteral = Literal["live", "live_demo", "in_development"]
 
 
 class ScreenshotOut(BaseModel):
@@ -31,6 +31,9 @@ class ProjectCreate(BaseModel):
     description: Optional[str] = None
     status: StatusLiteral = "in_development"
     live_demo_url: Optional[str] = None
+    download_ios_url: Optional[str] = None
+    download_android_url: Optional[str] = None
+    download_windows_url: Optional[str] = None
     sort_order: int = 0
 
 
@@ -41,6 +44,9 @@ class ProjectUpdate(BaseModel):
     description: Optional[str] = None
     status: Optional[StatusLiteral] = None
     live_demo_url: Optional[str] = None
+    download_ios_url: Optional[str] = None
+    download_android_url: Optional[str] = None
+    download_windows_url: Optional[str] = None
     sort_order: Optional[int] = None
 
 
@@ -65,6 +71,9 @@ class ProjectDetailOut(BaseModel):
     description: Optional[str]
     status: str
     live_demo_url: Optional[str]
+    download_ios_url: Optional[str] = None
+    download_android_url: Optional[str] = None
+    download_windows_url: Optional[str] = None
     sort_order: int
     created_at: datetime
     screenshots: list[ScreenshotOut] = []

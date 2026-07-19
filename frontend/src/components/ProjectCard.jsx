@@ -20,7 +20,8 @@ const devThumbStyle = {
 export default function ProjectCard({ project }) {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
-  const isLive = project.status === 'live';
+  const isLiveDemo = project.status === 'live_demo';
+  const isShipped = project.status === 'live' || isLiveDemo;
 
   return (
     <div
@@ -29,10 +30,10 @@ export default function ProjectCard({ project }) {
       onMouseLeave={() => setHover(false)}
       onClick={() => navigate(`/projects/${project.slug}`)}
     >
-      <div style={isLive ? thumbStyle : devThumbStyle}>
-        {isLive && project.cover_image_url ? (
+      <div style={isShipped ? thumbStyle : devThumbStyle}>
+        {isShipped && project.cover_image_url ? (
           <img src={imageUrl(project.cover_image_url)} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        ) : isLive ? (
+        ) : isShipped ? (
           <div style={{
             width: 64, height: 64, borderRadius: 16,
             background: 'linear-gradient(135deg,#22D3EE,#3D6BFF 55%,#7B2FF7)',
@@ -47,12 +48,15 @@ export default function ProjectCard({ project }) {
       <div style={{ padding: 22 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
           <div style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 18, color: NAVY }}>{project.title}</div>
-          {isLive ? (
+          {isShipped ? (
             <span style={{
-              display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: BLUE,
-              background: 'rgba(61,107,255,0.08)', padding: '4px 10px', borderRadius: 100, whiteSpace: 'nowrap',
+              display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700,
+              color: isLiveDemo ? '#0891b2' : BLUE,
+              background: isLiveDemo ? 'rgba(8,145,178,0.1)' : 'rgba(61,107,255,0.08)',
+              padding: '4px 10px', borderRadius: 100, whiteSpace: 'nowrap',
             }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE }} />LIVE
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: isLiveDemo ? '#0891b2' : BLUE }} />
+              {isLiveDemo ? 'LIVE DEMO' : 'LIVE'}
             </span>
           ) : (
             <span style={{
@@ -72,7 +76,7 @@ export default function ProjectCard({ project }) {
               onClick={(e) => e.stopPropagation()}
               style={liveDemoButtonStyle}
             >
-              Live Demo
+              {isLiveDemo ? 'Live Demo' : 'Open App'}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{ marginLeft: 2 }}>
                 <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

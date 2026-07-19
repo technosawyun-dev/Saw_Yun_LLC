@@ -6,3 +6,7 @@ venv/
 uploads/*
 !uploads/.gitkeep
 .DS_Store
+
+# Local pg_dump output from docker-compose.prod.yml's db-backup service —
+# full database dumps (all customer data, messages, etc.), never committed.
+backups/

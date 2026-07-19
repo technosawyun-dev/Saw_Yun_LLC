@@ -39,7 +39,7 @@ services:
     networks:
       - internal
 
-  # -- Hourly pg_dump → ./backups/ ---------------------------------------------
+  # -- Hourly pg_dump → ./backups/
   db-backup:
     image: prodrigestivill/postgres-backup-local
     container_name: sawyun_db_backup
@@ -64,7 +64,7 @@ services:
     networks:
       - internal
 
-  # -- R2 backup uploader (rclone syncs ./backups → Cloudflare R2) --------------
+  # -- R2 backup uploader (rclone syncs ./backups → Cloudflare R2)
   backup-uploader:
     image: rclone/rclone:latest
     container_name: sawyun_backup_uploader

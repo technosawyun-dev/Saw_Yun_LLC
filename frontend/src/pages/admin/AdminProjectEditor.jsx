@@ -27,7 +27,12 @@ function slugify(s) {
   return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
-const emptyForm = { title: '', slug: '', tagline: '', description: '', status: 'in_development', live_demo_url: '', sort_order: 0 };
+const emptyForm = {
+  title: '', slug: '', tagline: '', description: '', status: 'in_development', live_demo_url: '',
+  download_ios_url: '', download_android_url: '', download_windows_url: '', sort_order: 0,
+};
+
+const STATUS_LABELS = { live: 'Live', live_demo: 'Live Demo', in_development: 'In development' };
 
 function ViewField({ label, children }) {
   return (
@@ -69,7 +74,9 @@ export default function AdminProjectEditor() {
       .then((p) => {
         const next = {
           title: p.title, slug: p.slug, tagline: p.tagline || '', description: p.description || '',
-          status: p.status, live_demo_url: p.live_demo_url || '', sort_order: p.sort_order,
+          status: p.status, live_demo_url: p.live_demo_url || '',
+          download_ios_url: p.download_ios_url || '', download_android_url: p.download_android_url || '',
+          download_windows_url: p.download_windows_url || '', sort_order: p.sort_order,
         };
         setForm(next);
         setOriginalForm(next);
@@ -104,6 +111,9 @@ export default function AdminProjectEditor() {
       tagline: form.tagline || null,
       description: form.description || null,
       live_demo_url: form.live_demo_url || null,
+      download_ios_url: form.download_ios_url || null,
+      download_android_url: form.download_android_url || null,
+      download_windows_url: form.download_windows_url || null,
       sort_order: Number(form.sort_order) || 0,
     };
     try {
@@ -184,22 +194,51 @@ export default function AdminProjectEditor() {
               <label style={labelStyle}>Description (shown on the project detail page)</label>
               <textarea style={{ ...inputStyle, resize: 'vertical' }} rows={4} value={form.description} onChange={onField('description')} placeholder="Longer description of the project" />
             </div>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <div style={{ flex: '1 1 180px' }}>
-                <label style={labelStyle}>Status</label>
-                <select style={inputStyle} value={form.status} onChange={onField('status')}>
-                  <option value="live">Live</option>
-                  <option value="in_development">In development</option>
-                </select>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16, borderRadius: 10, border: `1px solid ${LINE}`, background: '#fbfbfd' }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: 0.5, color: MUTED }}>LIVE STATUS &amp; DEMO LINK</div>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 160px' }}>
+                  <label style={labelStyle}>Live</label>
+                  <select style={inputStyle} value={form.status} onChange={onField('status')}>
+                    <option value="live">Live</option>
+                    <option value="live_demo">Live Demo</option>
+                    <option value="in_development">In development</option>
+                  </select>
+                </div>
+                <div style={{ flex: '2 1 260px' }}>
+                  <label style={labelStyle}>Live demo URL (optional)</label>
+                  <input style={inputStyle} value={form.live_demo_url} onChange={onField('live_demo_url')} placeholder="https://app.example.com" />
+                </div>
               </div>
-              <div style={{ flex: '2 1 260px' }}>
-                <label style={labelStyle}>Live demo URL (optional)</label>
-                <input style={inputStyle} value={form.live_demo_url} onChange={onField('live_demo_url')} placeholder="https://app.example.com" />
+              <div style={{ fontSize: 12, color: MUTED }}>
+                Both Live and Live Demo show this same link as a button on the public site — Live means it opens the real product (open an account there), Live Demo means it's just an example/demo version. In development shows no button.
               </div>
-              <div style={{ flex: '1 1 100px' }}>
-                <label style={labelStyle}>Sort order</label>
-                <input type="number" style={inputStyle} value={form.sort_order} onChange={onField('sort_order')} />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16, borderRadius: 10, border: `1px solid ${LINE}`, background: '#fbfbfd' }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: 0.5, color: MUTED }}>DOWNLOAD LINKS (OPTIONAL)</div>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 200px' }}>
+                  <label style={labelStyle}>iOS download URL</label>
+                  <input style={inputStyle} value={form.download_ios_url} onChange={onField('download_ios_url')} placeholder="https://apps.apple.com/…" />
+                </div>
+                <div style={{ flex: '1 1 200px' }}>
+                  <label style={labelStyle}>Android download URL</label>
+                  <input style={inputStyle} value={form.download_android_url} onChange={onField('download_android_url')} placeholder="https://play.google.com/…" />
+                </div>
+                <div style={{ flex: '1 1 200px' }}>
+                  <label style={labelStyle}>Windows download URL</label>
+                  <input style={inputStyle} value={form.download_windows_url} onChange={onField('download_windows_url')} placeholder="https://…/setup.exe" />
+                </div>
               </div>
+              <div style={{ fontSize: 12, color: MUTED }}>
+                Each shows a Download button only on that platform's tab, only when its URL is filled in. Web has no download (browser-based).
+              </div>
+            </div>
+
+            <div style={{ maxWidth: 160 }}>
+              <label style={labelStyle}>Sort order</label>
+              <input type="number" style={inputStyle} value={form.sort_order} onChange={onField('sort_order')} />
             </div>
             {error && <div className="fade-up" style={{ fontSize: 13.5, color: '#c0392b' }}>{error}</div>}
             <div style={{ display: 'flex', gap: 10 }}>
@@ -221,12 +260,12 @@ export default function AdminProjectEditor() {
             </ViewField>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               <div style={{ flex: '1 1 180px' }}>
-                <ViewField label="Status">
+                <ViewField label="Live">
                   <span style={{
                     fontSize: 12.5, fontWeight: 700, padding: '4px 10px', borderRadius: 100,
-                    color: form.status === 'live' ? BLUE : '#7B2FF7',
-                    background: form.status === 'live' ? 'rgba(61,107,255,0.08)' : 'rgba(123,47,247,0.1)',
-                  }}>{form.status === 'live' ? 'Live' : 'In development'}</span>
+                    color: form.status === 'live' ? BLUE : form.status === 'live_demo' ? '#0891b2' : '#7B2FF7',
+                    background: form.status === 'live' ? 'rgba(61,107,255,0.08)' : form.status === 'live_demo' ? 'rgba(8,145,178,0.1)' : 'rgba(123,47,247,0.1)',
+                  }}>{STATUS_LABELS[form.status]}</span>
                 </ViewField>
               </div>
               <div style={{ flex: '2 1 260px' }}>
@@ -238,6 +277,29 @@ export default function AdminProjectEditor() {
               </div>
               <div style={{ flex: '1 1 100px' }}>
                 <ViewField label="Sort order">{form.sort_order}</ViewField>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 1 200px' }}>
+                <ViewField label="iOS download URL">
+                  {form.download_ios_url
+                    ? <a href={form.download_ios_url} target="_blank" rel="noopener noreferrer" style={{ color: BLUE }}>{form.download_ios_url}</a>
+                    : '—'}
+                </ViewField>
+              </div>
+              <div style={{ flex: '1 1 200px' }}>
+                <ViewField label="Android download URL">
+                  {form.download_android_url
+                    ? <a href={form.download_android_url} target="_blank" rel="noopener noreferrer" style={{ color: BLUE }}>{form.download_android_url}</a>
+                    : '—'}
+                </ViewField>
+              </div>
+              <div style={{ flex: '1 1 200px' }}>
+                <ViewField label="Windows download URL">
+                  {form.download_windows_url
+                    ? <a href={form.download_windows_url} target="_blank" rel="noopener noreferrer" style={{ color: BLUE }}>{form.download_windows_url}</a>
+                    : '—'}
+                </ViewField>
               </div>
             </div>
             <div>

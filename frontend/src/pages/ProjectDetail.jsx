@@ -26,6 +26,8 @@ const FALLBACK_MOCK = {
   web: <POSDesktopMockRich />, windows: <POSDesktopMockRich />,
 };
 
+const DOWNLOAD_FIELD = { ios: 'download_ios_url', android: 'download_android_url', windows: 'download_windows_url' };
+
 export default function ProjectDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -58,24 +60,31 @@ export default function ProjectDetail() {
     return <div className="detail-top-dev" style={{ color: MUTED }}>Loading…</div>;
   }
 
-  const isLive = project.status === 'live';
+  const isLiveDemo = project.status === 'live_demo';
+  const isShipped = project.status === 'live' || isLiveDemo;
   const screenshot = project.screenshots.find((s) => s.platform === platform);
   const notes = PLATFORM_NOTES[platform];
+  const downloadUrl = DOWNLOAD_FIELD[platform] ? project[DOWNLOAD_FIELD[platform]] : null;
 
   return (
     <div data-screen-label="Project detail" className="fade-up">
-      {isLive ? (
+      {isShipped ? (
         <div className="detail-top-live">
           <button onClick={() => navigate('/projects')} style={{ background: 'none', border: 'none', padding: 0, fontSize: 14, fontWeight: 700, color: BLUE, cursor: 'pointer', fontFamily: FONT_BODY, display: 'inline-flex', alignItems: 'center', gap: 6 }}>← All projects</button>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 8, marginTop: 24 }}>
             <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 26, letterSpacing: -0.5, margin: 0, color: NAVY }}>{project.title}</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: BLUE, background: 'rgba(61,107,255,0.08)', padding: '5px 12px', borderRadius: 100, display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, animation: 'pulseGlow 2s ease-in-out infinite' }} />LIVE
+              <span style={{
+                fontSize: 13, fontWeight: 700, color: isLiveDemo ? '#0891b2' : BLUE,
+                background: isLiveDemo ? 'rgba(8,145,178,0.1)' : 'rgba(61,107,255,0.08)',
+                padding: '5px 12px', borderRadius: 100, display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: isLiveDemo ? '#0891b2' : BLUE, animation: 'pulseGlow 2s ease-in-out infinite' }} />
+                {isLiveDemo ? 'LIVE DEMO' : 'LIVE'}
               </span>
               {project.live_demo_url && (
                 <a href={project.live_demo_url} target="_blank" rel="noopener noreferrer" style={liveDemoButtonStyle}>
-                  Live Demo
+                  {isLiveDemo ? 'Live Demo' : 'Open App'}
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{ marginLeft: 2 }}><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </a>
               )}
@@ -103,6 +112,20 @@ export default function ProjectDetail() {
               {notes.notes.map((n) => (
                 <div key={n} style={{ fontSize: 14.5, lineHeight: 1.6, color: MUTED, paddingLeft: 20, position: 'relative', marginBottom: 14 }}>{n}</div>
               ))}
+              {downloadUrl && (
+                <a
+                  href={downloadUrl} target="_blank" rel="noopener noreferrer"
+                  className="admin-btn"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8, padding: '11px 20px',
+                    borderRadius: 10, border: `1px solid ${LINE}`, background: '#fff', color: NAVY,
+                    fontWeight: 700, fontSize: 14, fontFamily: FONT_BODY, textDecoration: 'none',
+                  }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3V15M12 15L7 10M12 15L17 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M4 18V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                  Download for {notes.title}
+                </a>
+              )}
             </div>
           </div>
         </div>

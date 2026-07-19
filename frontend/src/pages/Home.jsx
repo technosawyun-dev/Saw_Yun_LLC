@@ -5,7 +5,7 @@ import IOSFrame from '../components/devices/IOSFrame';
 import AndroidFrame from '../components/devices/AndroidFrame';
 import MacWindowFrame from '../components/devices/MacWindowFrame';
 import BrowserWindowFrame from '../components/devices/BrowserWindowFrame';
-import { POSMobileMockSimple, POSDesktopMockSimple } from '../components/PosMocks';
+import { POSMobileMockSimple, POSMobileMockRich, POSDesktopMockSimple } from '../components/PosMocks';
 import {
   NAVY, MUTED, BLUE, CYAN, VIOLET, LINE, FONT_HEAD, FONT_BODY,
   primaryBtnStyle, secondaryBtnStyle, serviceIconWrapBlue, serviceIconWrapCyan, serviceIconWrapViolet,
@@ -160,19 +160,19 @@ export default function Home() {
                 >View case study →</button>
               </div>
             </div>
-            <div style={{ overflow: 'visible', borderRadius: 14, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 320 }}>
-              <div className="fade-up" key={heroPlatform} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ overflow: 'visible', borderRadius: 14, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 320, minWidth: 0 }}>
+              <div className="fade-up" key={heroPlatform} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 320 }}>
                 {heroPlatform === 'ios' && (
-                  <div style={{ transform: 'scale(0.485)', transformOrigin: 'center' }}><IOSFrame><POSMobileMockSimple /></IOSFrame></div>
+                  <div style={{ transform: 'scale(0.485)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><IOSFrame><POSMobileMockSimple /></IOSFrame></div>
                 )}
                 {heroPlatform === 'tablet' && (
-                  <div style={{ transform: 'scale(0.457)', transformOrigin: 'center' }}><AndroidFrame><POSMobileMockSimple /></AndroidFrame></div>
+                  <div style={{ transform: 'scale(0.5)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><AndroidFrame width={480} height={640}><POSMobileMockRich /></AndroidFrame></div>
                 )}
                 {heroPlatform === 'windows' && (
-                  <div style={{ transform: 'scale(0.762)', transformOrigin: 'center' }}><MacWindowFrame title="Saw Yun POS"><POSDesktopMockSimple /></MacWindowFrame></div>
+                  <div style={{ transform: 'scale(0.762)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><MacWindowFrame title="Saw Yun POS"><POSDesktopMockSimple /></MacWindowFrame></div>
                 )}
                 {heroPlatform === 'web' && (
-                  <div style={{ transform: 'scale(0.762)', transformOrigin: 'center' }}><BrowserWindowFrame url="app.sawyunpos.com"><POSDesktopMockSimple /></BrowserWindowFrame></div>
+                  <div style={{ transform: 'scale(0.762)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><BrowserWindowFrame url="app.sawyunpos.com"><POSDesktopMockSimple /></BrowserWindowFrame></div>
                 )}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 22 }}>
