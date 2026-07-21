@@ -112,7 +112,20 @@ export default function ProjectDetail() {
               {notes.notes.map((n) => (
                 <div key={n} style={{ fontSize: 14.5, lineHeight: 1.6, color: MUTED, paddingLeft: 20, position: 'relative', marginBottom: 14 }}>{n}</div>
               ))}
-              {downloadUrl && (
+              {platform === 'web' && project.live_demo_url ? (
+                <a
+                  href={project.live_demo_url} target="_blank" rel="noopener noreferrer"
+                  className="admin-btn"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8, padding: '11px 20px',
+                    borderRadius: 10, border: `1px solid ${LINE}`, background: '#fff', color: NAVY,
+                    fontWeight: 700, fontSize: 14, fontFamily: FONT_BODY, textDecoration: 'none',
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  Open Web App
+                </a>
+              ) : downloadUrl && (
                 <a
                   href={downloadUrl} target="_blank" rel="noopener noreferrer"
                   className="admin-btn"
