@@ -125,7 +125,7 @@ export default function ProjectDetail() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   Open Web App
                 </a>
-              ) : downloadUrl && (
+              ) : downloadUrl ? (
                 <a
                   href={downloadUrl} target="_blank" rel="noopener noreferrer"
                   className="admin-btn"
@@ -138,6 +138,18 @@ export default function ProjectDetail() {
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3V15M12 15L7 10M12 15L17 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M4 18V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                   Download for {notes.title}
                 </a>
+              ) : platform !== 'web' && (
+                <button
+                  disabled
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8, padding: '11px 20px',
+                    borderRadius: 10, border: `1px dashed ${LINE}`, background: '#fbfbfd', color: MUTED,
+                    fontWeight: 700, fontSize: 14, fontFamily: FONT_BODY, cursor: 'not-allowed',
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 7V12L15.5 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" /></svg>
+                  Coming Soon
+                </button>
               )}
             </div>
           </div>
