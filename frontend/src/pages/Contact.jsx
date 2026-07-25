@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SiTiktok, SiViber, SiTelegram, SiYoutube } from 'react-icons/si';
+import { SiFacebook, SiTiktok, SiViber, SiTelegram, SiYoutube } from 'react-icons/si';
 import { sendContact } from '../api/contact';
 import { NAVY, MUTED, BLUE, LINE, FONT_HEAD, FONT_BODY } from '../styles/theme';
 
@@ -129,6 +129,7 @@ export default function Contact() {
 
             <div style={{ background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, padding: 20, display: 'flex', justifyContent: 'space-between', gap: 8 }}>
               {[
+                { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61592179810897', Icon: SiFacebook },
                 { label: 'TikTok', href: 'https://www.tiktok.com/@saw.yunllc?is_from_webapp=1&sender_device=pc', Icon: SiTiktok },
                 { label: 'Viber', href: 'https://invite.viber.com/?g2=AQBQYMvZ0oUO%2FVbQdt14UApedKyJPfJ3ZaL1%2FyQM6E%2FtlB4OArSpfnuEAt5DjPjo', Icon: SiViber },
                 { label: 'Telegram', href: 'https://t.me/+Qer7Jk9nmedlMmZl', Icon: SiTelegram },
