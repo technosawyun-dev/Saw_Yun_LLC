@@ -129,11 +129,11 @@ export default function Contact() {
 
             <div style={{ background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, padding: 20, display: 'flex', justifyContent: 'space-between', gap: 8 }}>
               {[
-                { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61592179810897', Icon: SiFacebook },
-                { label: 'TikTok', href: 'https://www.tiktok.com/@saw.yunllc?is_from_webapp=1&sender_device=pc', Icon: SiTiktok },
-                { label: 'Viber', href: 'https://invite.viber.com/?g2=AQBQYMvZ0oUO%2FVbQdt14UApedKyJPfJ3ZaL1%2FyQM6E%2FtlB4OArSpfnuEAt5DjPjo', Icon: SiViber },
-                { label: 'Telegram', href: 'https://t.me/+Qer7Jk9nmedlMmZl', Icon: SiTelegram },
-                { label: 'YouTube', href: 'https://www.youtube.com/@SawYun-LLC', Icon: SiYoutube },
+                { label: 'Facebook', href: 'https://go.sawyuntech.com/facebook', Icon: SiFacebook },
+                { label: 'TikTok', href: 'https://go.sawyuntech.com/tiktok', Icon: SiTiktok },
+                { label: 'Viber', href: 'https://go.sawyuntech.com/viber', Icon: SiViber },
+                { label: 'Telegram', href: 'https://go.sawyuntech.com/telegram', Icon: SiTelegram },
+                { label: 'YouTube', href: 'https://go.sawyuntech.com/youtube', Icon: SiYoutube },
               ].map(({ label, href, Icon }) => (
                 <a
                   key={label} href={href} target="_blank" rel="noopener noreferrer"
