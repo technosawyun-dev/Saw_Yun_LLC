@@ -6,7 +6,7 @@ import {
 import { imageUrl } from '../../api/client';
 import { FRAME_BY_PLATFORM, FRAME_PREVIEW_SIZE } from '../../components/devices/frameRegistry';
 import ScreenshotAdjuster from '../../components/admin/ScreenshotAdjuster';
-import { NAVY, MUTED, BLUE, LINE, FONT_HEAD, FONT_BODY, PLATFORMS } from '../../styles/theme';
+import { NAVY, MUTED, BLUE, LINE, FONT_HEAD, FONT_BODY, PLATFORMS, PLATFORM_NOTES } from '../../styles/theme';
 
 const inputStyle = {
   width: '100%', padding: '11px 14px', borderRadius: 10, border: `1px solid ${LINE}`, fontSize: 14,
@@ -31,7 +31,10 @@ const emptyForm = {
   title: '', slug: '', tagline: '', description: '', status: 'in_development', live_demo_url: '',
   download_ios_url: '', download_android_url: '', download_windows_url: '', sort_order: 0,
   is_featured: false,
+  notes_ios: '', notes_android: '', notes_web: '', notes_windows: '',
 };
+
+const NOTES_FIELD = { ios: 'notes_ios', android: 'notes_android', web: 'notes_web', windows: 'notes_windows' };
 
 const STATUS_LABELS = { live: 'Live', live_demo: 'Live Demo', in_development: 'In development' };
 
@@ -79,6 +82,8 @@ export default function AdminProjectEditor() {
           download_ios_url: p.download_ios_url || '', download_android_url: p.download_android_url || '',
           download_windows_url: p.download_windows_url || '', sort_order: p.sort_order,
           is_featured: p.is_featured || false,
+          notes_ios: p.notes_ios || '', notes_android: p.notes_android || '',
+          notes_web: p.notes_web || '', notes_windows: p.notes_windows || '',
         };
         setForm(next);
         setOriginalForm(next);
@@ -116,6 +121,10 @@ export default function AdminProjectEditor() {
       download_ios_url: form.download_ios_url || null,
       download_android_url: form.download_android_url || null,
       download_windows_url: form.download_windows_url || null,
+      notes_ios: form.notes_ios || null,
+      notes_android: form.notes_android || null,
+      notes_web: form.notes_web || null,
+      notes_windows: form.notes_windows || null,
       sort_order: Number(form.sort_order) || 0,
       is_featured: !!form.is_featured,
     };
@@ -240,6 +249,27 @@ export default function AdminProjectEditor() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16, borderRadius: 10, border: `1px solid ${LINE}`, background: '#fbfbfd' }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: 0.5, color: MUTED }}>PLATFORM NOTES ("BUILT FOR…")</div>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                {PLATFORMS.map((p) => (
+                  <div key={p.key} style={{ flex: '1 1 220px' }}>
+                    <label style={labelStyle}>{p.label}</label>
+                    <textarea
+                      style={{ ...inputStyle, resize: 'vertical' }}
+                      rows={3}
+                      value={form[NOTES_FIELD[p.key]]}
+                      onChange={onField(NOTES_FIELD[p.key])}
+                      placeholder={PLATFORM_NOTES[p.key].notes.join('\n')}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 12, color: MUTED }}>
+                One line per bullet, shown under "Built for {'{'}Platform{'}'}" on the project detail page. Leave a box blank to use the default copy shown as its placeholder.
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16, borderRadius: 10, border: `1px solid ${LINE}`, background: '#fbfbfd' }}>
               <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: 0.5, color: MUTED }}>HOMEPAGE</div>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: 14, fontWeight: 700, color: NAVY }}>
                 <input
@@ -330,6 +360,21 @@ export default function AdminProjectEditor() {
                     : '—'}
                 </ViewField>
               </div>
+            </div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {PLATFORMS.map((p) => {
+                const custom = form[NOTES_FIELD[p.key]];
+                const lines = (custom || PLATFORM_NOTES[p.key].notes.join('\n')).split('\n').filter(Boolean);
+                return (
+                  <div key={p.key} style={{ flex: '1 1 200px' }}>
+                    <ViewField label={`${p.label} notes${custom ? '' : ' (default)'}`}>
+                      <ul style={{ margin: 0, paddingLeft: 18, fontWeight: 400, color: MUTED, fontSize: 13.5 }}>
+                        {lines.map((l) => <li key={l}>{l}</li>)}
+                      </ul>
+                    </ViewField>
+                  </div>
+                );
+              })}
             </div>
             <div>
               <button type="button" onClick={onEdit} className="admin-btn admin-btn-primary" style={primaryBtnStyle}>Edit</button>

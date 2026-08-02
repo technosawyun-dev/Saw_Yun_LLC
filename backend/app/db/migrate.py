@@ -14,6 +14,10 @@ STARTUP_MIGRATIONS = [
     "ALTER TABLE projects ADD COLUMN IF NOT EXISTS download_android_url VARCHAR",
     "ALTER TABLE projects ADD COLUMN IF NOT EXISTS download_windows_url VARCHAR",
     "ALTER TABLE projects ADD COLUMN IF NOT EXISTS is_featured BOOLEAN NOT NULL DEFAULT FALSE",
+    "ALTER TABLE projects ADD COLUMN IF NOT EXISTS notes_ios TEXT",
+    "ALTER TABLE projects ADD COLUMN IF NOT EXISTS notes_android TEXT",
+    "ALTER TABLE projects ADD COLUMN IF NOT EXISTS notes_web TEXT",
+    "ALTER TABLE projects ADD COLUMN IF NOT EXISTS notes_windows TEXT",
 ]
 
 

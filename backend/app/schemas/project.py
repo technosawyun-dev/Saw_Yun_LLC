@@ -34,6 +34,10 @@ class ProjectCreate(BaseModel):
     download_ios_url: Optional[str] = None
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
+    notes_ios: Optional[str] = None
+    notes_android: Optional[str] = None
+    notes_web: Optional[str] = None
+    notes_windows: Optional[str] = None
     sort_order: int = 0
     is_featured: bool = False
 
@@ -48,6 +52,10 @@ class ProjectUpdate(BaseModel):
     download_ios_url: Optional[str] = None
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
+    notes_ios: Optional[str] = None
+    notes_android: Optional[str] = None
+    notes_web: Optional[str] = None
+    notes_windows: Optional[str] = None
     sort_order: Optional[int] = None
     is_featured: Optional[bool] = None
 
@@ -77,6 +85,10 @@ class ProjectDetailOut(BaseModel):
     download_ios_url: Optional[str] = None
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
+    notes_ios: Optional[str] = None
+    notes_android: Optional[str] = None
+    notes_web: Optional[str] = None
+    notes_windows: Optional[str] = None
     sort_order: int
     is_featured: bool = False
     created_at: datetime
