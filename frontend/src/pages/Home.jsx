@@ -6,14 +6,21 @@ import AndroidFrame from '../components/devices/AndroidFrame';
 import MacWindowFrame from '../components/devices/MacWindowFrame';
 import BrowserWindowFrame from '../components/devices/BrowserWindowFrame';
 import { POSMobileMockSimple, POSMobileMockRich, POSDesktopMockSimple } from '../components/PosMocks';
+import { getFeaturedProject } from '../api/projects';
+import { imageUrl } from '../api/client';
+import { FRAME_BY_PLATFORM } from '../components/devices/frameRegistry';
 import {
   NAVY, MUTED, BLUE, CYAN, VIOLET, LINE, FONT_HEAD, FONT_BODY,
   primaryBtnStyle, secondaryBtnStyle, serviceIconWrapBlue, serviceIconWrapCyan, serviceIconWrapViolet,
-  cardStyle, cardHoverLift,
+  cardStyle, cardHoverLift, PLATFORMS,
 } from '../styles/theme';
 
 const HERO_ORDER = ['ios', 'windows', 'tablet', 'web'];
-const HERO_LABELS = { ios: 'Mobile', windows: 'Windows', tablet: 'Tablet', web: 'Web' };
+const HERO_LABELS = { ios: 'Mobile', android: 'Android', windows: 'Windows', tablet: 'Tablet', web: 'Web' };
+
+// Scales chosen so every frame fits the band's 320px-tall device area:
+// ios 660px, android 700px, web/windows 420px tall at natural size.
+const FEATURED_SCALE = { ios: 0.485, android: 0.457, web: 0.762, windows: 0.762 };
 
 const SERVICES = [
   { icon: serviceIconWrapBlue, title: 'Custom Software', desc: 'Tailored systems designed around how your business actually operates.',
@@ -39,13 +46,46 @@ export default function Home() {
   const navigate = useNavigate();
   const [heroPlatform, setHeroPlatform] = useState('ios');
   const [hoveredService, setHoveredService] = useState(null);
+  const [featured, setFeatured] = useState(null);
 
   useEffect(() => {
+    getFeaturedProject().then((p) => {
+      if (!p) return;
+      setFeatured(p);
+      const first = PLATFORMS.find((pl) => p.screenshots.some((s) => s.platform === pl.key));
+      if (first) setHeroPlatform(first.key);
+    });
+  }, []);
+
+  // Platforms the featured project actually has screenshots for — the band
+  // rotates through only those; with none (or no featured project) it falls
+  // back to the original mockup rotation.
+  const featuredPlatformKeys = featured
+    ? PLATFORMS.filter((pl) => featured.screenshots.some((s) => s.platform === pl.key)).map((pl) => pl.key)
+    : [];
+  const rotation = featuredPlatformKeys.length ? featuredPlatformKeys : HERO_ORDER;
+  const rotationKey = rotation.join(',');
+
+  useEffect(() => {
+    const order = rotationKey.split(',');
+    if (order.length < 2) return;
     const id = setInterval(() => {
-      setHeroPlatform((p) => HERO_ORDER[(HERO_ORDER.indexOf(p) + 1) % HERO_ORDER.length]);
+      setHeroPlatform((p) => order[(order.indexOf(p) + 1) % order.length]);
     }, 3200);
     return () => clearInterval(id);
-  }, []);
+  }, [rotationKey]);
+
+  const heroShot = featuredPlatformKeys.includes(heroPlatform)
+    ? featured.screenshots.find((s) => s.platform === heroPlatform)
+    : null;
+  const FeaturedFrame = heroShot ? FRAME_BY_PLATFORM[heroPlatform] : null;
+  const featuredPills = featured
+    ? PLATFORMS.filter((pl) => featuredPlatformKeys.includes(pl.key)).map((pl) => pl.label)
+    : ['iOS', 'Android', 'Web', 'Windows'];
+  let featuredWebUrl = 'app.sawyunpos.com';
+  if (featured?.live_demo_url) {
+    try { featuredWebUrl = new URL(featured.live_demo_url).host; } catch { /* keep default */ }
+  }
 
   return (
     <div data-screen-label="Home" className="fade-up">
@@ -144,41 +184,59 @@ export default function Home() {
           <div className="featured-grid">
             <div>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 1.5, color: '#7dd8ff', marginBottom: 14 }}>FEATURED WORK</div>
-              <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 32, letterSpacing: -0.6, margin: '0 0 16px', color: '#fff' }}>Saw Yun POS</h2>
+              <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 32, letterSpacing: -0.6, margin: '0 0 16px', color: '#fff' }}>{featured?.title ?? 'Saw Yun POS'}</h2>
               <p style={{ fontSize: 15.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.65)', margin: '0 0 24px', maxWidth: 460 }}>
-                Our flagship product: a point-of-sale system for retail and hospitality, built once and shipped natively to iOS, Android, Web and Windows — so a single café counter or a multi-branch chain runs on the same system.
+                {featured
+                  ? (featured.description || featured.tagline || '')
+                  : 'Our flagship product: a point-of-sale system for retail and hospitality, built once and shipped natively to iOS, Android, Web and Windows — so a single café counter or a multi-branch chain runs on the same system.'}
               </p>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
-                {['iOS', 'Android', 'Web', 'Windows'].map((b) => (
-                  <span key={b} style={{ padding: '6px 12px', borderRadius: 100, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', fontSize: 12.5, fontWeight: 600, color: '#fff' }}>{b}</span>
-                ))}
-              </div>
+              {featuredPills.length > 0 && (
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
+                  {featuredPills.map((b) => (
+                    <span key={b} style={{ padding: '6px 12px', borderRadius: 100, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', fontSize: 12.5, fontWeight: 600, color: '#fff' }}>{b}</span>
+                  ))}
+                </div>
+              )}
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => navigate('/projects/saw-yun-pos')}
+                  onClick={() => navigate(featured ? `/projects/${featured.slug}` : '/projects/saw-yun-pos')}
                   style={{ padding: '14px 24px', border: 'none', borderRadius: 11, background: 'linear-gradient(135deg,#22D3EE 0%,#3D6BFF 55%,#7B2FF7 100%)', color: '#fff', fontFamily: FONT_BODY, fontWeight: 700, fontSize: 14.5, cursor: 'pointer' }}
                 >View case study →</button>
               </div>
             </div>
             <div style={{ overflow: 'visible', borderRadius: 14, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 320, minWidth: 0 }}>
               <div className="fade-up" key={heroPlatform} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 320 }}>
-                {heroPlatform === 'ios' && (
-                  <div style={{ transform: 'scale(0.485)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><IOSFrame><POSMobileMockSimple /></IOSFrame></div>
-                )}
-                {heroPlatform === 'tablet' && (
-                  <div style={{ transform: 'scale(0.5)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><AndroidFrame width={480} height={640}><POSMobileMockRich /></AndroidFrame></div>
-                )}
-                {heroPlatform === 'windows' && (
-                  <div style={{ transform: 'scale(0.762)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><MacWindowFrame title="Saw Yun POS"><POSDesktopMockSimple /></MacWindowFrame></div>
-                )}
-                {heroPlatform === 'web' && (
-                  <div style={{ transform: 'scale(0.762)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><BrowserWindowFrame url="app.sawyunpos.com"><POSDesktopMockSimple /></BrowserWindowFrame></div>
+                {heroShot ? (
+                  <div style={{ transform: `scale(${FEATURED_SCALE[heroPlatform]})`, transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}>
+                    <FeaturedFrame
+                      screenshot={imageUrl(heroShot.image_url)}
+                      focalX={heroShot.focal_x} focalY={heroShot.focal_y} zoom={heroShot.zoom}
+                      alt={`${featured.title} on ${HERO_LABELS[heroPlatform]}`}
+                      {...(heroPlatform === 'web' ? { url: featuredWebUrl } : {})}
+                      {...(heroPlatform === 'windows' ? { title: featured.title } : {})}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    {heroPlatform === 'ios' && (
+                      <div style={{ transform: 'scale(0.485)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><IOSFrame><POSMobileMockSimple /></IOSFrame></div>
+                    )}
+                    {heroPlatform === 'tablet' && (
+                      <div style={{ transform: 'scale(0.5)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><AndroidFrame width={480} height={640}><POSMobileMockRich /></AndroidFrame></div>
+                    )}
+                    {heroPlatform === 'windows' && (
+                      <div style={{ transform: 'scale(0.762)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><MacWindowFrame title="Saw Yun POS"><POSDesktopMockSimple /></MacWindowFrame></div>
+                    )}
+                    {heroPlatform === 'web' && (
+                      <div style={{ transform: 'scale(0.762)', transformOrigin: 'center', height: 320, display: 'flex', alignItems: 'center' }}><BrowserWindowFrame url="app.sawyunpos.com"><POSDesktopMockSimple /></BrowserWindowFrame></div>
+                    )}
+                  </>
                 )}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 22 }}>
                 <span style={{ fontSize: 12.5, fontWeight: 700, color: 'rgba(255,255,255,0.6)' }}>{HERO_LABELS[heroPlatform]}</span>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  {HERO_ORDER.map((p) => (
+                  {rotation.map((p) => (
                     <span key={p} style={{ width: 7, height: 7, borderRadius: '50%', background: p === heroPlatform ? CYAN : 'rgba(255,255,255,0.2)', transition: 'background .3s ease' }} />
                   ))}
                 </div>

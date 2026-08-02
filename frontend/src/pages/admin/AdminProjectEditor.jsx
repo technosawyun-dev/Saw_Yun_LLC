@@ -30,6 +30,7 @@ function slugify(s) {
 const emptyForm = {
   title: '', slug: '', tagline: '', description: '', status: 'in_development', live_demo_url: '',
   download_ios_url: '', download_android_url: '', download_windows_url: '', sort_order: 0,
+  is_featured: false,
 };
 
 const STATUS_LABELS = { live: 'Live', live_demo: 'Live Demo', in_development: 'In development' };
@@ -77,6 +78,7 @@ export default function AdminProjectEditor() {
           status: p.status, live_demo_url: p.live_demo_url || '',
           download_ios_url: p.download_ios_url || '', download_android_url: p.download_android_url || '',
           download_windows_url: p.download_windows_url || '', sort_order: p.sort_order,
+          is_featured: p.is_featured || false,
         };
         setForm(next);
         setOriginalForm(next);
@@ -115,6 +117,7 @@ export default function AdminProjectEditor() {
       download_android_url: form.download_android_url || null,
       download_windows_url: form.download_windows_url || null,
       sort_order: Number(form.sort_order) || 0,
+      is_featured: !!form.is_featured,
     };
     try {
       if (isNew) {
@@ -236,6 +239,22 @@ export default function AdminProjectEditor() {
               </div>
             </div>
 
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16, borderRadius: 10, border: `1px solid ${LINE}`, background: '#fbfbfd' }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: 0.5, color: MUTED }}>HOMEPAGE</div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: 14, fontWeight: 700, color: NAVY }}>
+                <input
+                  type="checkbox"
+                  checked={form.is_featured}
+                  onChange={(e) => setForm((f) => ({ ...f, is_featured: e.target.checked }))}
+                  style={{ width: 16, height: 16, accentColor: '#3D6BFF', cursor: 'pointer' }}
+                />
+                Show as Featured Work on the homepage
+              </label>
+              <div style={{ fontSize: 12, color: MUTED }}>
+                Only one project can be featured — checking this un-features whichever project currently holds the spot. The homepage band uses this project's title, description and uploaded screenshots.
+              </div>
+            </div>
+
             <div style={{ maxWidth: 160 }}>
               <label style={labelStyle}>Sort order</label>
               <input type="number" style={inputStyle} value={form.sort_order} onChange={onField('sort_order')} />
@@ -277,6 +296,16 @@ export default function AdminProjectEditor() {
               </div>
               <div style={{ flex: '1 1 100px' }}>
                 <ViewField label="Sort order">{form.sort_order}</ViewField>
+              </div>
+              <div style={{ flex: '1 1 160px' }}>
+                <ViewField label="Featured on homepage">
+                  {form.is_featured ? (
+                    <span style={{
+                      fontSize: 12.5, fontWeight: 700, padding: '4px 10px', borderRadius: 100,
+                      color: '#b8860b', background: 'rgba(184,134,11,0.1)',
+                    }}>★ FEATURED</span>
+                  ) : '—'}
+                </ViewField>
               </div>
             </div>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>

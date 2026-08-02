@@ -35,6 +35,7 @@ class ProjectCreate(BaseModel):
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
     sort_order: int = 0
+    is_featured: bool = False
 
 
 class ProjectUpdate(BaseModel):
@@ -48,6 +49,7 @@ class ProjectUpdate(BaseModel):
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
     sort_order: Optional[int] = None
+    is_featured: Optional[bool] = None
 
 
 class ProjectSummaryOut(BaseModel):
@@ -58,6 +60,7 @@ class ProjectSummaryOut(BaseModel):
     status: str
     live_demo_url: Optional[str]
     sort_order: int
+    is_featured: bool = False
     cover_image_url: Optional[str] = None
 
     model_config = {"from_attributes": True}
@@ -75,6 +78,7 @@ class ProjectDetailOut(BaseModel):
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
     sort_order: int
+    is_featured: bool = False
     created_at: datetime
     screenshots: list[ScreenshotOut] = []
 

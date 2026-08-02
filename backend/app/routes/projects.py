@@ -12,12 +12,21 @@ from app.services.storage import save_upload, delete_file
 router = APIRouter(tags=["projects"])
 
 
+def _clear_other_featured(db: Session, keep_id: int | None = None) -> None:
+    # Only one project drives the homepage "Featured Work" band — featuring
+    # one silently un-features whichever project held it before.
+    query = db.query(Project).filter(Project.is_featured.is_(True))
+    if keep_id is not None:
+        query = query.filter(Project.id != keep_id)
+    query.update({Project.is_featured: False}, synchronize_session="fetch")
+
+
 def _to_summary(project: Project) -> ProjectSummaryOut:
     cover = project.screenshots[0].image_url if project.screenshots else None
     return ProjectSummaryOut(
         id=project.id, slug=project.slug, title=project.title, tagline=project.tagline,
         status=project.status, live_demo_url=project.live_demo_url, sort_order=project.sort_order,
-        cover_image_url=cover,
+        is_featured=project.is_featured, cover_image_url=cover,
     )
 
 
@@ -30,6 +39,19 @@ def list_projects(db: Session = Depends(get_db)):
         .order_by(Project.sort_order.asc(), Project.created_at.desc()).all()
     )
     return [_to_summary(p) for p in projects]
+
+
+# Must be declared before /api/projects/{slug}, or "featured" would be
+# matched as a slug by the route below.
+@router.get("/api/projects/featured", response_model=ProjectDetailOut)
+def get_featured_project(db: Session = Depends(get_db)):
+    project = (
+        db.query(Project).options(joinedload(Project.screenshots))
+        .filter(Project.is_featured.is_(True)).first()
+    )
+    if not project:
+        raise HTTPException(status_code=404, detail="No featured project")
+    return project
 
 
 @router.get("/api/projects/{slug}", response_model=ProjectDetailOut)
@@ -54,6 +76,8 @@ def get_project_admin(id: int, db: Session = Depends(get_db)):
 def create_project(body: ProjectCreate, db: Session = Depends(get_db)):
     if db.query(Project).filter(Project.slug == body.slug).first():
         raise HTTPException(status_code=400, detail="A project with this slug already exists")
+    if body.is_featured:
+        _clear_other_featured(db)
     project = Project(**body.model_dump())
     db.add(project)
     db.commit()
@@ -73,6 +97,8 @@ def update_project(id: int, body: ProjectUpdate, db: Session = Depends(get_db)):
     if "slug" in data and data["slug"] != project.slug:
         if db.query(Project).filter(Project.slug == data["slug"]).first():
             raise HTTPException(status_code=400, detail="A project with this slug already exists")
+    if data.get("is_featured"):
+        _clear_other_featured(db, keep_id=project.id)
     for field, value in data.items():
         setattr(project, field, value)
     db.commit()

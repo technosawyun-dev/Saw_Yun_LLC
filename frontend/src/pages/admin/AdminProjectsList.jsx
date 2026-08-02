@@ -44,6 +44,12 @@ export default function AdminProjectsList() {
                 <div style={{ fontSize: 12.5, color: MUTED, marginTop: 2 }}>/{p.slug}</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {p.is_featured && (
+                  <span style={{
+                    fontSize: 11.5, fontWeight: 700, padding: '4px 10px', borderRadius: 100,
+                    color: '#b8860b', background: 'rgba(184,134,11,0.1)', whiteSpace: 'nowrap',
+                  }}>★ FEATURED</span>
+                )}
                 <span style={{
                   fontSize: 11.5, fontWeight: 700, padding: '4px 10px', borderRadius: 100,
                   color: p.status === 'live' ? BLUE : VIOLET,

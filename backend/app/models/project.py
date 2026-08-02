@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float, func
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float, Boolean, func
 from sqlalchemy.orm import relationship
 from app.db.session import Base
 
@@ -20,6 +20,9 @@ class Project(Base):
     download_android_url = Column(String, nullable=True)
     download_windows_url = Column(String, nullable=True)
     sort_order = Column(Integer, default=0)
+    # At most one project should have this set — it drives the homepage
+    # "Featured Work" band. Enforced in the routes (setting it clears others).
+    is_featured = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     screenshots = relationship(

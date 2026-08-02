@@ -42,7 +42,7 @@ export default function ProjectDetail() {
       .then((p) => {
         setProject(p);
         const firstAvailable = PLATFORMS.find((pl) => p.screenshots.some((s) => s.platform === pl.key));
-        setPlatform(firstAvailable ? firstAvailable.key : 'ios');
+        setPlatform(firstAvailable ? firstAvailable.key : null);
       })
       .catch(() => setNotFound(true));
   }, [slug]);
@@ -62,9 +62,10 @@ export default function ProjectDetail() {
 
   const isLiveDemo = project.status === 'live_demo';
   const isShipped = project.status === 'live' || isLiveDemo;
-  const screenshot = project.screenshots.find((s) => s.platform === platform);
-  const notes = PLATFORM_NOTES[platform];
-  const downloadUrl = DOWNLOAD_FIELD[platform] ? project[DOWNLOAD_FIELD[platform]] : null;
+  const availablePlatforms = PLATFORMS.filter((pl) => project.screenshots.some((s) => s.platform === pl.key));
+  const screenshot = platform ? project.screenshots.find((s) => s.platform === platform) : null;
+  const notes = platform ? PLATFORM_NOTES[platform] : null;
+  const downloadUrl = platform && DOWNLOAD_FIELD[platform] ? project[DOWNLOAD_FIELD[platform]] : null;
 
   return (
     <div data-screen-label="Project detail" className="fade-up">
@@ -92,12 +93,15 @@ export default function ProjectDetail() {
           </div>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: MUTED, maxWidth: 720, margin: '10px 0 32px' }}>{project.description}</p>
 
-          <div style={{ display: 'flex', gap: 10, marginBottom: 32, flexWrap: 'wrap' }}>
-            {PLATFORMS.map((p) => (
-              <button key={p.key} onClick={() => setPlatform(p.key)} style={tabStyle(platform === p.key)}>{p.label}</button>
-            ))}
-          </div>
+          {availablePlatforms.length > 1 && (
+            <div style={{ display: 'flex', gap: 10, marginBottom: 32, flexWrap: 'wrap' }}>
+              {availablePlatforms.map((p) => (
+                <button key={p.key} onClick={() => setPlatform(p.key)} style={tabStyle(platform === p.key)}>{p.label}</button>
+              ))}
+            </div>
+          )}
 
+          {platform && screenshot && (
           <div className="case-study-grid">
             <div className="case-study-device-wrap">
               <div className="fade-up" key={platform}>
@@ -153,6 +157,7 @@ export default function ProjectDetail() {
               )}
             </div>
           </div>
+          )}
         </div>
       ) : (
         <div className="detail-top-dev">

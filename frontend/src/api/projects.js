@@ -4,6 +4,10 @@ export const listProjects = () => client.get('/api/projects').then((r) => r.data
 
 export const getProject = (slug) => client.get(`/api/projects/${slug}`).then((r) => r.data);
 
+// Resolves to null (not an error) when no project is featured yet.
+export const getFeaturedProject = () =>
+  client.get('/api/projects/featured').then((r) => r.data).catch(() => null);
+
 export const getProjectByIdAdmin = (id) => client.get(`/api/admin/projects/${id}`).then((r) => r.data);
 
 export const createProject = (body) => client.post('/api/admin/projects', body).then((r) => r.data);
