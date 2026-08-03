@@ -115,10 +115,10 @@ img { max-width: 100%; }
 .case-study-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 44px; align-items: flex-start; padding-bottom: 20px; }
 @media (max-width: 900px) { .case-study-grid { grid-template-columns: 1fr; } }
 
-.case-study-device-wrap { display: flex; justify-content: center; overflow: visible; transform-origin: top center; }
-@media (max-width: 900px) { .case-study-device-wrap { transform: scale(0.78); min-width: 0; overflow: hidden; } }
-@media (max-width: 900px) { .case-study-device-wrap.is-wide { transform: scale(0.5); } }
-@media (max-width: 480px) { .case-study-device-wrap.is-wide { transform: scale(0.42); } }
+.case-study-device-wrap { display: flex; justify-content: center; }
+@media (max-width: 900px) { .case-study-device-wrap { zoom: 0.78; } }
+@media (max-width: 900px) { .case-study-device-wrap.is-wide { zoom: 0.5; } }
+@media (max-width: 480px) { .case-study-device-wrap.is-wide { zoom: 0.42; } }
 
 .contact-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: stretch; }
 @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
