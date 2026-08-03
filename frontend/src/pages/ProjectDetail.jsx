@@ -107,7 +107,7 @@ export default function ProjectDetail() {
 
           {platform && screenshot && (
           <div className="case-study-grid">
-            <div className="case-study-device-wrap">
+            <div className={`case-study-device-wrap${platform === 'web' || platform === 'windows' ? ' is-wide' : ''}`}>
               <div className="fade-up" key={platform}>
                 {platform === 'ios' && <IOSFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} focalX={screenshot?.focal_x ?? 50} focalY={screenshot?.focal_y ?? 50} zoom={screenshot?.zoom ?? 1} alt={`${project.title} on iOS`}>{FALLBACK_MOCK.ios}</IOSFrame>}
                 {platform === 'android' && <AndroidFrame screenshot={screenshot ? imageUrl(screenshot.image_url) : null} focalX={screenshot?.focal_x ?? 50} focalY={screenshot?.focal_y ?? 50} zoom={screenshot?.zoom ?? 1} alt={`${project.title} on Android`}>{FALLBACK_MOCK.android}</AndroidFrame>}
