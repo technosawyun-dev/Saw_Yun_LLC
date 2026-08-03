@@ -19,6 +19,13 @@ class Project(Base):
     download_ios_url = Column(String, nullable=True)
     download_android_url = Column(String, nullable=True)
     download_windows_url = Column(String, nullable=True)
+    # "Built for <platform>" bullet notes shown on the project detail page,
+    # one line per bullet. Null/blank falls back to the default copy in the
+    # frontend's PLATFORM_NOTES.
+    notes_ios = Column(Text, nullable=True)
+    notes_android = Column(Text, nullable=True)
+    notes_web = Column(Text, nullable=True)
+    notes_windows = Column(Text, nullable=True)
     sort_order = Column(Integer, default=0)
     # At most one project should have this set — it drives the homepage
     # "Featured Work" band. Enforced in the routes (setting it clears others).

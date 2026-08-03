@@ -27,6 +27,7 @@ const FALLBACK_MOCK = {
 };
 
 const DOWNLOAD_FIELD = { ios: 'download_ios_url', android: 'download_android_url', windows: 'download_windows_url' };
+const NOTES_FIELD = { ios: 'notes_ios', android: 'notes_android', web: 'notes_web', windows: 'notes_windows' };
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -64,7 +65,10 @@ export default function ProjectDetail() {
   const isShipped = project.status === 'live' || isLiveDemo;
   const availablePlatforms = PLATFORMS.filter((pl) => project.screenshots.some((s) => s.platform === pl.key));
   const screenshot = platform ? project.screenshots.find((s) => s.platform === platform) : null;
-  const notes = platform ? PLATFORM_NOTES[platform] : null;
+  const customNotes = platform ? project[NOTES_FIELD[platform]] : null;
+  const notes = platform
+    ? { title: PLATFORM_NOTES[platform].title, notes: customNotes ? customNotes.split('\n').filter(Boolean) : PLATFORM_NOTES[platform].notes }
+    : null;
   const downloadUrl = platform && DOWNLOAD_FIELD[platform] ? project[DOWNLOAD_FIELD[platform]] : null;
 
   return (
