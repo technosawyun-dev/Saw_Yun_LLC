@@ -20,6 +20,7 @@ legal/      Company legal documents (source of truth)
 
 - **Project showcase, fully admin-managed** — `Project` + `ProjectScreenshot` models (`backend/app/models/project.py`). Admin can create/edit/delete projects, set status (`live` / `live_demo` / `in_development`), set a live-demo URL and per-platform download links (iOS/Android/Windows), and mark exactly one project as "featured" (drives the homepage band — setting a new one silently un-features the old one, enforced in `routes/projects.py`).
 - **Per-platform screenshot management** — upload a screenshot per platform (ios/android/web/windows) per project, with focal-point + zoom fields (`focal_x`, `focal_y`, `zoom`) so an admin can reposition/crop the image inside its device mockup without re-uploading.
+- **Per-platform "Built for X" notes** — optional `notes_ios` / `notes_android` / `notes_web` / `notes_windows` text fields, editable in the admin project editor; the project-detail page shows them as a bullet list under "Built for {platform}", falling back to generic platform copy when a project leaves the field blank.
 - **Public API** — `GET /api/projects`, `GET /api/projects/featured`, `GET /api/projects/{slug}` — no auth required.
 - **Admin API** — `/api/admin/projects/*` (CRUD + screenshot upload/reorder/delete), all behind a `require_admin` JWT dependency.
 - **JWT auth** — single admin-role `User` model (`role` defaults to `"admin"`), login issues a 7-day bearer token (`/api/auth/login`), plus `/api/auth/me` and `/api/auth/change-password`.
