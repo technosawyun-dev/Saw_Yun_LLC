@@ -1,8 +1,8 @@
 # Reseller & Referral Partner Agreement
 
 **Saw Yun LLC**
-Effective Date: July 20, 2026 (tentative — subject to change before launch)
-Last Updated: July 16, 2026
+Effective Date: July 20, 2026
+Last Updated: September 27, 2026
 
 This Reseller & Referral Partner Agreement ("Agreement") governs your participation as a reseller or referral partner ("Reseller," "you") in the reseller/referral program (the "Program") offered as part of an eligible SaaS Product, operated by Saw Yun LLC ("Saw Yun," "we," "us," "our"), a single-member limited liability company registered in the State of Montana, United States. This Agreement applies to whichever product's Program you are enrolled in, as identified at enrollment, and is incorporated by reference into, and supplements, our [Terms of Service](./01-terms-of-service.md). In the event of a conflict between this Agreement and the Terms of Service on reseller-specific matters, this Agreement controls.
 
