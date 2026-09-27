@@ -2,7 +2,7 @@
 
 **Saw Yun LLC**
 Effective Date: July 20, 2026 (tentative — subject to change before launch)
-Last Updated: July 16, 2026
+Last Updated: September 27, 2026
 
 Saw Yun LLC ("Saw Yun," "we," "us," "our") respects your privacy. This Privacy Policy explains what information we collect, how we use it, and the choices you have, across all of our current and future products and services (collectively, the "Services").
 
@@ -58,6 +58,7 @@ We do not sell your personal information. We share information only as follows:
   - Mailtrap (used for transactional email, such as password resets and receipts)
   - Our self-hosted VPS provider (used for hosting the Services and databases)
 - **Future service providers** we may add as we grow, including payment processors (e.g., Stripe, PayPal, Wise), analytics providers, and AI providers. We will update this Policy as these are adopted.
+- **Cloud backup to your own accounts.** For products that offer cloud backup to a service you connect yourself, such as Google Drive, your backup files are stored directly in your own connected account and never pass through or are stored on our servers.
 - **Legal and safety reasons**, where required to comply with law, respond to legal process, or protect the rights, property, or safety of Saw Yun LLC, our customers, or others.
 - **Business transfers**, if Saw Yun LLC is involved in a merger, acquisition, or sale of assets, in which case information may be transferred as part of that transaction.
 
