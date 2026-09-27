@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Saw Yun LLC**
-Effective Date: July 20, 2026 (tentative — subject to change before launch)
+Effective Date: July 20, 2026
 Last Updated: September 27, 2026
 
 Saw Yun LLC ("Saw Yun," "we," "us," "our") respects your privacy. This Privacy Policy explains what information we collect, how we use it, and the choices you have, across all of our current and future products and services (collectively, the "Services").
@@ -75,6 +75,8 @@ We retain information according to the following general schedule, unless a long
 | Crash logs | 12 months |
 | Billing records | 7 years |
 | License records | While the license is active, plus a reasonable retention period afterward |
+
+The "Backups" retention period above applies to backups we perform ourselves — it does not apply to cloud backups you store in your own connected account (such as Google Drive, described in §3), which follow that service's own retention and are outside our control.
 
 ## 5. Account Deletion
 

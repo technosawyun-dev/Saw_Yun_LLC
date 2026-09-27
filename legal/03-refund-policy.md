@@ -1,8 +1,8 @@
 # Refund Policy
 
 **Saw Yun LLC**
-Effective Date: July 20, 2026 (tentative — subject to change before launch)
-Last Updated: July 16, 2026
+Effective Date: July 20, 2026
+Last Updated: September 27, 2026
 
 This Refund Policy applies to all products and services offered by Saw Yun LLC ("Saw Yun," "we," "us," "our"), current and future, unless a specific product states otherwise at the time of purchase.
 

@@ -2,8 +2,8 @@
 
 **Saw Yun LLC**
 Version: 1.0
-Effective Date: July 20, 2026 (tentative — subject to change before launch)
-Last Updated: July 16, 2026
+Effective Date: July 20, 2026
+Last Updated: September 27, 2026
 
 ## 1. Introduction
 
@@ -272,6 +272,8 @@ You grant Saw Yun LLC a limited, worldwide, non-exclusive, royalty-free license 
 ## 26. Data Backups
 
 Saw Yun LLC performs reasonable backup procedures for supported cloud-based Services. However, backups are intended primarily for disaster recovery and are not guaranteed to restore every version of Customer Data. Customers remain responsible for maintaining independent backups of critical business information whenever appropriate. Backup retention periods may change over time based on operational requirements.
+
+Where a product offers cloud backup to a service you connect yourself, such as Google Drive, that backup is stored in and controlled by your own connected account — it is not part of the backup procedures or retention schedule described in this section, and Saw Yun LLC does not control its retention.
 
 ## 27. Third-Party Services
 
