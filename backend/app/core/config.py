@@ -12,7 +12,11 @@ class Settings(BaseSettings):
 
     # Optional with safe defaults
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080  # 7 days
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 720  # 12 hours
+    # The admin login lives in an HttpOnly cookie (JavaScript cannot read it). Secure = HTTPS only;
+    # set COOKIE_SECURE=false only for local http development.
+    COOKIE_NAME: str = "sawyun_admin"
+    COOKIE_SECURE: bool = True
     UPLOAD_DIR: str = "uploads"
     MAX_UPLOAD_SIZE_MB: int = 10
     CORS_ORIGINS: str = "http://localhost:5173"
