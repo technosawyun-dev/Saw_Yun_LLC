@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from sqlalchemy.orm import Session
 from app.db.session import get_db
@@ -10,6 +12,18 @@ from app.core.config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
+# Account lockout (stored in the database, survives restarts): after MAX_FAILED_LOGINS wrong
+# passwords the account refuses every login - even the right password - for LOCKOUT_MINUTES.
+MAX_FAILED_LOGINS = 10
+LOCKOUT_MINUTES = 15
+
+
+def _is_locked(user: User, now: datetime) -> bool:
+    if user.locked_until is None:
+        return False
+    until = user.locked_until if user.locked_until.tzinfo else user.locked_until.replace(tzinfo=timezone.utc)
+    return until > now
+
 
 # Per visitor address: 5 tries a minute and 30 an hour. The limits stack - a slow guesser is
 # still stopped by the hourly cap.
@@ -18,8 +32,23 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 @limiter.limit("30/hour")
 def login(request: Request, response: Response, body: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email).first()
+    now = datetime.now(timezone.utc)
+    if user and _is_locked(user, now):
+        verify_password_or_dummy(body.password, None)  # same time cost as a real check
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="account_locked",
+                            headers={"Retry-After": str(LOCKOUT_MINUTES * 60)})
     if not verify_password_or_dummy(body.password, user.password_hash if user else None):
+        if user:
+            user.failed_login_count = (user.failed_login_count or 0) + 1
+            if user.failed_login_count >= MAX_FAILED_LOGINS:
+                user.locked_until = now + timedelta(minutes=LOCKOUT_MINUTES)
+                user.failed_login_count = 0
+            db.commit()
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    if user.failed_login_count or user.locked_until:
+        user.failed_login_count = 0
+        user.locked_until = None
+        db.commit()
     token = create_access_token(subject=user.email, pwd_marker=password_marker(user.password_hash))
     # The browser keeps the login in an HttpOnly cookie: page scripts (even injected ones) cannot read it.
     response.set_cookie(

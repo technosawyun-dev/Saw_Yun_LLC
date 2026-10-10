@@ -24,7 +24,9 @@ export default function AdminLogin() {
       await login(email, password);
       navigate('/admin', { replace: true });
     } catch (err) {
-      setError(err.response?.status === 429
+      setError(err.response?.data?.detail === 'account_locked'
+        ? 'Too many wrong passwords. This account is locked for 15 minutes.'
+        : err.response?.status === 429
         ? 'Too many attempts. Please wait a minute and try again.'
         : 'Invalid email or password.');
     } finally {
