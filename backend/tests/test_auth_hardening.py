@@ -156,3 +156,51 @@ def test_logout_clears_the_cookie(client):
 
 def test_no_cookie_no_token_is_401(client):
     assert client.get("/api/auth/me").status_code == 401
+
+
+# ---- database-backed account lockout ----
+
+def _fail_n(c, n, pw="wrong-password-xyz"):
+    for i in range(n):
+        assert _login(c, pw=pw, ip=f"198.51.100.{i + 1}").status_code == 401  # a new IP each time: not the IP limiter
+
+
+def test_account_locks_after_ten_wrong_passwords_even_for_right_one(client):
+    _fail_n(client, 10)
+    r = _login(client, ip="198.51.100.77")  # correct password, fresh IP
+    assert r.status_code == 429 and r.json()["detail"] == "account_locked"
+    assert "retry-after" in r.headers
+
+
+def test_lock_is_stored_in_the_database(client):
+    _fail_n(client, 10)
+    db = SessionLocal()
+    try:
+        u = db.query(User).filter(User.email == EMAIL).first()
+        assert u.locked_until is not None
+    finally:
+        db.close()
+
+
+def test_lock_expires(client):
+    from datetime import datetime, timedelta, timezone
+    _fail_n(client, 10)
+    db = SessionLocal()
+    u = db.query(User).filter(User.email == EMAIL).first()
+    u.locked_until = datetime.now(timezone.utc) - timedelta(seconds=1)
+    db.commit()
+    db.close()
+    assert _login(client, ip="198.51.100.88").status_code == 200
+
+
+def test_success_resets_the_failure_counter(client):
+    _fail_n(client, 9)
+    assert _login(client, ip="198.51.100.90").status_code == 200  # right password on try 10
+    _fail_n(client, 9)  # counter restarted: 9 more wrong tries still do not lock
+    assert _login(client, ip="198.51.100.91").status_code == 200
+
+
+def test_unknown_email_never_locks_or_stores_anything(client):
+    for i in range(12):
+        assert _login(client, email="ghost@example.com", ip=f"192.0.2.{i + 1}").status_code == 401
+    assert _login(client, ip="192.0.2.99").status_code == 200  # real account untouched
