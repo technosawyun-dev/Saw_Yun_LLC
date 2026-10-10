@@ -1,14 +1,12 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from app.core.limiter import limiter
 from app.db.session import get_db
 from app.models.message import Message
 from app.schemas.message import MessageCreate, MessageOut
 from app.core.deps import require_admin
 from app.services.email import send_contact_notification
 
-limiter = Limiter(key_func=get_remote_address)
 router = APIRouter(tags=["messages"])
 
 

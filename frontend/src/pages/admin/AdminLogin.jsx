@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { login, isAuthed } from '../../api/auth';
 import logo from '../../assets/logo.png';
 import { NAVY, MUTED, LINE, BG, FONT_HEAD, FONT_BODY } from '../../styles/theme';
+import PasswordInput from '../../components/admin/PasswordInput';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -22,8 +23,10 @@ export default function AdminLogin() {
     try {
       await login(email, password);
       navigate('/admin', { replace: true });
-    } catch {
-      setError('Invalid email or password.');
+    } catch (err) {
+      setError(err.response?.status === 429
+        ? 'Too many attempts. Please wait a minute and try again.'
+        : 'Invalid email or password.');
     } finally {
       setSubmitting(false);
     }
@@ -46,7 +49,7 @@ export default function AdminLogin() {
         </div>
         <div style={{ marginBottom: 20 }}>
           <label style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: MUTED, marginBottom: 8 }}>Password</label>
-          <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
+          <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password"
             style={{ width: '100%', padding: '12px 14px', borderRadius: 10, border: `1px solid ${LINE}`, fontSize: 14.5, fontFamily: FONT_BODY, outline: 'none' }} />
         </div>
         {error && <div className="fade-up" style={{ fontSize: 13.5, color: '#c0392b', marginBottom: 16 }}>{error}</div>}

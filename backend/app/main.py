@@ -2,12 +2,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from slowapi.util import get_remote_address
 from pathlib import Path
 
 from app.core.config import settings
+from app.core.limiter import limiter
 from app.db.session import Base, engine, SessionLocal
 from app.db.init_db import init_db
 from app.db.migrate import run_startup_migrations
@@ -26,9 +26,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-limiter = Limiter(key_func=get_remote_address)
-
-app = FastAPI(title="Saw Yun LLC API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="Saw Yun LLC API", version="1.1.0", lifespan=lifespan)
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)

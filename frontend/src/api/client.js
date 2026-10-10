@@ -9,21 +9,20 @@ import axios from 'axios';
 // VITE_API_URL must be set there to the backend's real public URL — see
 // frontend/.env.example.
 export const API_BASE = import.meta.env.VITE_API_URL || '';
-const TOKEN_KEY = 'sawyun_admin_token';
+// The admin login itself lives in an HttpOnly cookie that the server sets: page scripts (including any
+// injected by an attacker) can never read it. This flag is NOT a secret - it only tells the UI whether to
+// show the admin area or the sign-in page. If it is stale, the first API call returns 401 and clears it.
+const SESSION_FLAG = 'sawyun_admin_session';
+try { localStorage.removeItem('sawyun_admin_token'); } catch { /* old versions kept the token here */ }
 
-const client = axios.create({ baseURL: API_BASE });
-
-client.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TOKEN_KEY);
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// withCredentials: send the login cookie to the API (a different origin on the same site).
+const client = axios.create({ baseURL: API_BASE, withCredentials: true });
 
 client.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(SESSION_FLAG);
       if (window.location.pathname.startsWith('/admin') && window.location.pathname !== '/admin/login') {
         window.location.href = '/admin/login';
       }
@@ -37,5 +36,5 @@ export function imageUrl(path) {
   return path.startsWith('http') ? path : `${API_BASE}${path}`;
 }
 
-export { TOKEN_KEY };
+export { SESSION_FLAG };
 export default client;
