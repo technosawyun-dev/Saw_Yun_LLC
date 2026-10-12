@@ -6,6 +6,8 @@ import IOSFrame from '../components/devices/IOSFrame';
 import AndroidFrame from '../components/devices/AndroidFrame';
 import MacWindowFrame from '../components/devices/MacWindowFrame';
 import BrowserWindowFrame from '../components/devices/BrowserWindowFrame';
+import AppIcon from '../components/AppIcon';
+import GooglePlayButton from '../components/GooglePlayButton';
 import { POSMobileMockRich, POSDesktopMockRich } from '../components/PosMocks';
 import {
   NAVY, MUTED, BLUE, VIOLET, LINE, FONT_HEAD, FONT_BODY,
@@ -73,6 +75,29 @@ export default function ProjectDetail() {
     ? { title: PLATFORM_NOTES[platform].title, notes: customNotes ? customNotes.split('\n').filter(Boolean) : PLATFORM_NOTES[platform].notes }
     : null;
   const downloadUrl = platform && DOWNLOAD_FIELD[platform] ? project[DOWNLOAD_FIELD[platform]] : null;
+
+  if (isApp) {
+    const playUrl = project.download_android_url && project.download_android_url.includes('play.google.com') ? project.download_android_url : null;
+    return (
+      <div data-screen-label="App detail" className="fade-up">
+        <div className="app-hero">
+          <button onClick={() => navigate(backPath)} style={{ alignSelf: 'flex-start', background: 'none', border: 'none', padding: 0, fontSize: 14, fontWeight: 700, color: BLUE, cursor: 'pointer', fontFamily: FONT_BODY }}>{backLabel}</button>
+          <div style={{ marginTop: 28 }}><AppIcon src={project.screenshots[0]?.image_url} name={project.title} size={132} /></div>
+          <h1 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 'clamp(28px, 6vw, 40px)', letterSpacing: -0.8, margin: '28px 0 10px', color: NAVY }}>{project.title}</h1>
+          {project.tagline && <p style={{ fontSize: 17, lineHeight: 1.6, color: MUTED, margin: '0 0 8px', maxWidth: 560 }}>{project.tagline}</p>}
+          {project.description && <p style={{ fontSize: 15, lineHeight: 1.75, color: MUTED, margin: '8px 0 0', maxWidth: 600 }}>{project.description}</p>}
+          <div className="app-hero-links" style={{ marginTop: 32 }}>
+            {isShipped && playUrl ? <GooglePlayButton href={playUrl} size="lg" /> : (
+              <span style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.5, color: VIOLET, background: 'rgba(123,47,247,0.1)', padding: '10px 18px', borderRadius: 100 }}>COMING SOON</span>
+            )}
+            {project.privacy_url && (
+              <a href={project.privacy_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 700, color: BLUE, textDecoration: 'none' }}>Privacy policy &rarr;</a>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div data-screen-label="Project detail" className="fade-up">
