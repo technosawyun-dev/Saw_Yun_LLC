@@ -28,6 +28,7 @@ def _to_summary(project: Project) -> ProjectSummaryOut:
         id=project.id, slug=project.slug, title=project.title, tagline=project.tagline, kind=project.kind,
         status=project.status, live_demo_url=project.live_demo_url, sort_order=project.sort_order,
         is_featured=project.is_featured, cover_image_url=cover, privacy_url=project.privacy_url,
+        download_android_url=project.download_android_url,
         on_google_play="play.google.com" in (project.download_android_url or ""),
     )
 

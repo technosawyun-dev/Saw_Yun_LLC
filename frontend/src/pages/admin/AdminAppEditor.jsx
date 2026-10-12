@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
-  getProjectByIdAdmin, createProject, updateProject, uploadScreenshot, deleteScreenshot, updateScreenshotPosition,
+  getProjectByIdAdmin, createProject, updateProject, uploadScreenshot, deleteScreenshot,
 } from '../../api/projects';
 import { imageUrl } from '../../api/client';
-import { FRAME_BY_PLATFORM, FRAME_PREVIEW_SIZE } from '../../components/devices/frameRegistry';
-import ScreenshotAdjuster from '../../components/admin/ScreenshotAdjuster';
+import AppIcon from '../../components/AppIcon';
 import { NAVY, MUTED, BLUE, LINE, FONT_HEAD, FONT_BODY } from '../../styles/theme';
 
 const inputStyle = {
@@ -41,8 +40,6 @@ export default function AdminAppEditor() {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [adjusting, setAdjusting] = useState(false);
-  const [adjustSaving, setAdjustSaving] = useState(false);
 
   useEffect(() => {
     if (isNew) { setForm(emptyForm); setShot(null); setLoading(false); return; }
@@ -104,7 +101,7 @@ export default function AdminAppEditor() {
     try {
       setShot(await uploadScreenshot(id, 'android', file));
     } catch {
-      setError('Screenshot upload failed. Use an image under 10MB (JPEG/PNG/WebP/GIF).');
+      setError('Logo upload failed. Use an image under 10MB (JPEG/PNG/WebP/GIF).');
     } finally {
       setUploading(false);
     }
@@ -115,22 +112,7 @@ export default function AdminAppEditor() {
     setShot(null);
   };
 
-  const onSavePosition = async (patch) => {
-    setAdjustSaving(true);
-    try {
-      setShot(await updateScreenshotPosition(id, shot.id, patch));
-      setAdjusting(false);
-    } catch {
-      setError('Could not save the screenshot position.');
-    } finally {
-      setAdjustSaving(false);
-    }
-  };
-
   if (loading) return <div style={{ color: MUTED }}>Loading…</div>;
-
-  const Frame = FRAME_BY_PLATFORM.android;
-  const size = FRAME_PREVIEW_SIZE.android;
 
   return (
     <div>
@@ -182,17 +164,16 @@ export default function AdminAppEditor() {
       </form>
 
       {isNew ? (
-        <div style={{ fontSize: 13, color: MUTED }}>After you add the app, you can upload its phone screenshot here.</div>
+        <div style={{ fontSize: 13, color: MUTED }}>After you add the app, you can upload its logo here.</div>
       ) : (
         <div>
-          <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 17, color: NAVY, marginBottom: 6 }}>Phone screenshot</h2>
-          <div style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>One screenshot, shown inside a phone frame on the app page.</div>
+          <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 17, color: NAVY, marginBottom: 6 }}>App logo</h2>
+          <div style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>A square image (512 x 512 works best), the same icon as on Google Play. Shown on the app card and app page.</div>
           <div style={{ background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, padding: 16, maxWidth: 260 }}>
             {shot ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-                <Frame screenshot={imageUrl(shot.image_url)} alt="" focalX={shot.focal_x} focalY={shot.focal_y} zoom={shot.zoom} width={size.width} height={size.height} />
+                <AppIcon src={shot.image_url} name={form.title} size={120} />
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button type="button" onClick={() => setAdjusting(true)} className="admin-btn" style={{ background: '#fbfbfd', color: NAVY, border: `1px solid ${LINE}`, borderRadius: 6, fontSize: 11, fontWeight: 700, padding: '4px 10px', cursor: 'pointer' }}>Adjust</button>
                   <button type="button" onClick={onDeleteShot} className="admin-btn" style={{ background: 'rgba(192,57,43,0.08)', color: '#c0392b', border: '1px solid rgba(192,57,43,0.2)', borderRadius: 6, fontSize: 11, fontWeight: 700, padding: '4px 10px', cursor: 'pointer' }}>Replace</button>
                 </div>
               </div>
@@ -200,7 +181,7 @@ export default function AdminAppEditor() {
               <>
                 <input ref={fileInput} type="file" accept="image/png,image/jpeg,image/webp,image/gif" style={{ display: 'none' }} onChange={(e) => { onUpload(e.target.files[0]); e.target.value = ''; }} />
                 <button type="button" disabled={uploading} onClick={() => fileInput.current?.click()} className="admin-btn" style={{ width: '100%', padding: '9px 0', borderRadius: 8, border: `1px dashed ${LINE}`, background: '#fbfbfd', color: NAVY, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
-                  {uploading ? 'Uploading…' : '+ Upload screenshot'}
+                  {uploading ? 'Uploading…' : '+ Upload logo'}
                 </button>
               </>
             )}
@@ -208,9 +189,6 @@ export default function AdminAppEditor() {
         </div>
       )}
 
-      {adjusting && shot && (
-        <ScreenshotAdjuster platform="android" imageSrc={imageUrl(shot.image_url)} initial={shot} saving={adjustSaving} onSave={onSavePosition} onCancel={() => setAdjusting(false)} />
-      )}
     </div>
   );
 }
