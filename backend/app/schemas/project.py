@@ -76,6 +76,7 @@ class ProjectSummaryOut(BaseModel):
     sort_order: int
     is_featured: bool = False
     cover_image_url: Optional[str] = None
+    privacy_url: Optional[str] = None
     on_google_play: bool = False
 
     model_config = {"from_attributes": True}
