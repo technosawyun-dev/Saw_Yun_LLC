@@ -134,10 +134,27 @@ const LEGAL_DOCS = {
       ['Contact', 'Reseller program support: admin@sawyuntech.com. General support: support@sawyuntech.com. Legal inquiries: legal@sawyuntech.com.'],
     ],
   },
+  apps: {
+    num: '07',
+    label: 'App Privacy Policies',
+    title: 'App Privacy Policies',
+    version: 'Per app',
+    applies: 'Each Saw Yun LLC app has its own privacy policy that explains what that app collects and why.',
+    intro: 'Our general Privacy Policy covers this website and our company. Every app we publish also has its own page, which is the policy that applies when you use that app. Choose your app below.',
+    apps: [
+      ['SawYun Wallet', 'Personal finance tracker for Android', 'https://sawyunwallet.sawyuntech.com/privacy'],
+      ['Koe Na Win', 'Buddhist practice companion for Android', 'https://koenawin.sawyuntech.com/privacy'],
+      ['ServiceDesk Mobile', 'Sales and repair shop companion for Android', 'https://servicedesk.sawyuntech.com/privacy'],
+      ['SY VPN', 'VPN app for Android', 'https://sy-api.malmah.fyi/privacy'],
+    ],
+    sections: [
+      ['Questions', 'Questions about any app policy: privacy@sawyuntech.com or support@sawyuntech.com.'],
+    ],
+  },
 };
 
 // Numbering intentionally skips 05 — that slot is the internal Company Legal Profile, which is never published to the site.
-const TAB_ORDER = ['terms', 'privacy', 'refund', 'eula', 'reseller'];
+const TAB_ORDER = ['terms', 'privacy', 'refund', 'eula', 'reseller', 'apps'];
 
 export default function Legal() {
   const { doc: docParam } = useParams();
@@ -198,6 +215,32 @@ export default function Legal() {
           </div>
           <div style={{ fontSize: 13, color: MUTED, marginBottom: 6 }}>{active.applies}</div>
           <p style={{ fontSize: 14.5, lineHeight: 1.75, color: MUTED, margin: '0 0 4px' }}>{active.intro}</p>
+          {active.apps && (
+            <div style={{ display: 'grid', gap: 12, margin: '22px 0 6px' }}>
+              {active.apps.map(([name, blurb, url]) => (
+                <a
+                  key={name}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 14, padding: '16px 18px', borderRadius: 14,
+                    border: '1px solid rgba(11,18,32,0.08)', background: 'rgba(11,18,32,0.02)', textDecoration: 'none',
+                  }}
+                >
+                  <span style={{
+                    width: 40, height: 40, borderRadius: 10, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'linear-gradient(135deg,#22D3EE 0%,#3D6BFF 55%,#7B2FF7 100%)', color: '#fff', fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 17,
+                  }}>{name.charAt(0)}</span>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: 'block', fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 16, color: NAVY }}>{name}</span>
+                    <span style={{ display: 'block', fontSize: 13, color: MUTED, marginTop: 2 }}>{blurb}</span>
+                  </span>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: BLUE, whiteSpace: 'nowrap' }}>Privacy policy &rarr;</span>
+                </a>
+              ))}
+            </div>
+          )}
           {active.sections.map(([heading, body]) => (
             <div key={heading}>
               <div style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 16, color: NAVY, margin: '26px 0 8px' }}>{heading}</div>

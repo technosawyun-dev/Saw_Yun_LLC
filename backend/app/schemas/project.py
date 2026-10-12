@@ -4,6 +4,7 @@ from datetime import datetime
 
 PlatformLiteral = Literal["ios", "android", "web", "windows"]
 StatusLiteral = Literal["live", "live_demo", "in_development"]
+KindLiteral = Literal["project", "app"]
 
 
 class ScreenshotOut(BaseModel):
@@ -29,11 +30,13 @@ class ProjectCreate(BaseModel):
     title: str
     tagline: Optional[str] = None
     description: Optional[str] = None
+    kind: KindLiteral = "project"
     status: StatusLiteral = "in_development"
     live_demo_url: Optional[str] = None
     download_ios_url: Optional[str] = None
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
+    privacy_url: Optional[str] = None
     notes_ios: Optional[str] = None
     notes_android: Optional[str] = None
     notes_web: Optional[str] = None
@@ -47,11 +50,13 @@ class ProjectUpdate(BaseModel):
     title: Optional[str] = None
     tagline: Optional[str] = None
     description: Optional[str] = None
+    kind: Optional[KindLiteral] = None
     status: Optional[StatusLiteral] = None
     live_demo_url: Optional[str] = None
     download_ios_url: Optional[str] = None
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
+    privacy_url: Optional[str] = None
     notes_ios: Optional[str] = None
     notes_android: Optional[str] = None
     notes_web: Optional[str] = None
@@ -65,11 +70,13 @@ class ProjectSummaryOut(BaseModel):
     slug: str
     title: str
     tagline: Optional[str]
+    kind: str = "project"
     status: str
     live_demo_url: Optional[str]
     sort_order: int
     is_featured: bool = False
     cover_image_url: Optional[str] = None
+    on_google_play: bool = False
 
     model_config = {"from_attributes": True}
 
@@ -80,11 +87,13 @@ class ProjectDetailOut(BaseModel):
     title: str
     tagline: Optional[str]
     description: Optional[str]
+    kind: str = "project"
     status: str
     live_demo_url: Optional[str]
     download_ios_url: Optional[str] = None
     download_android_url: Optional[str] = None
     download_windows_url: Optional[str] = None
+    privacy_url: Optional[str] = None
     notes_ios: Optional[str] = None
     notes_android: Optional[str] = None
     notes_web: Optional[str] = None

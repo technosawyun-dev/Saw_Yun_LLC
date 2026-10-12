@@ -8,7 +8,7 @@ export default function Projects() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    listProjects().then(setProjects).catch(() => setError('Could not load projects right now.'));
+    listProjects('project').then(setProjects).catch(() => setError('Could not load projects right now.'));
   }, []);
 
   return (

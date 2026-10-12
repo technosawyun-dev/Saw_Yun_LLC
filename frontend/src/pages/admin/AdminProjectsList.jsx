@@ -7,7 +7,7 @@ export default function AdminProjectsList() {
   const [projects, setProjects] = useState(null);
   const [error, setError] = useState(null);
 
-  const load = () => listProjects().then(setProjects).catch(() => setError('Could not load projects.'));
+  const load = () => listProjects('project').then(setProjects).catch(() => setError('Could not load projects.'));
 
   useEffect(() => { load(); }, []);
 

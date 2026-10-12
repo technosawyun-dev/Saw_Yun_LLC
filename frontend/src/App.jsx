@@ -8,6 +8,9 @@ import ProjectDetail from './pages/ProjectDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Legal from './pages/Legal';
+import Apps from './pages/Apps';
+import AdminAppsList from './pages/admin/AdminAppsList';
+import AdminAppEditor from './pages/admin/AdminAppEditor';
 
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import AdminLayout from './components/admin/AdminLayout';
@@ -45,6 +48,8 @@ export default function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/apps" element={<Apps />} />
+          <Route path="/apps/:slug" element={<ProjectDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/legal" element={<Legal />} />
@@ -59,6 +64,9 @@ export default function App() {
             <Route path="projects" element={<AdminProjectsList />} />
             <Route path="projects/new" element={<AdminProjectEditor />} />
             <Route path="projects/:id" element={<AdminProjectEditor />} />
+            <Route path="apps" element={<AdminAppsList />} />
+            <Route path="apps/new" element={<AdminAppEditor />} />
+            <Route path="apps/:id" element={<AdminAppEditor />} />
             <Route path="messages" element={<AdminMessages />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>

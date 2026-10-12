@@ -24,6 +24,7 @@ export default function Footer() {
             <Link to="/" style={linkStyle}>Home</Link>
             <Link to="/services" style={linkStyle}>Services</Link>
             <Link to="/projects" style={linkStyle}>Projects</Link>
+            <Link to="/apps" style={linkStyle}>Apps</Link>
             <Link to="/about" style={linkStyle}>About</Link>
           </div>
           <div>
