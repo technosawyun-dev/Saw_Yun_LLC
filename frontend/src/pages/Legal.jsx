@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { listProjects } from '../api/projects';
 import { NAVY, MUTED, BLUE, FONT_HEAD } from '../styles/theme';
 
 const LEGAL_DOCS = {
@@ -141,12 +143,7 @@ const LEGAL_DOCS = {
     version: 'Per app',
     applies: 'Each Saw Yun LLC app has its own privacy policy that explains what that app collects and why.',
     intro: 'Our general Privacy Policy covers this website and our company. Every app we publish also has its own page, which is the policy that applies when you use that app. Choose your app below.',
-    apps: [
-      ['SawYun Wallet', 'Personal finance tracker for Android', 'https://sawyunwallet.sawyuntech.com/privacy'],
-      ['Koe Na Win', 'Buddhist practice companion for Android', 'https://koenawin.sawyuntech.com/privacy'],
-      ['ServiceDesk Mobile', 'Sales and repair shop companion for Android', 'https://servicedesk.sawyuntech.com/privacy'],
-      ['SY VPN', 'VPN app for Android', 'https://sy-api.malmah.fyi/privacy'],
-    ],
+    fromApps: true,
     sections: [
       ['Questions', 'Questions about any app policy: privacy@sawyuntech.com or support@sawyuntech.com.'],
     ],
@@ -161,6 +158,14 @@ export default function Legal() {
   const navigate = useNavigate();
   const doc = LEGAL_DOCS[docParam] ? docParam : 'terms';
   const active = LEGAL_DOCS[doc];
+
+  // The App Privacy Policies tab reads the same apps as the Apps page, so adding or editing an app
+  // (and its privacy link) in the admin updates this list too.
+  const [apps, setApps] = useState(null);
+  useEffect(() => {
+    if (!active.fromApps) return;
+    listProjects('app').then((list) => setApps(list.filter((a) => a.privacy_url))).catch(() => setApps([]));
+  }, [active.fromApps]);
 
   return (
     <div data-screen-label="Legal" className="fade-up">
@@ -215,12 +220,15 @@ export default function Legal() {
           </div>
           <div style={{ fontSize: 13, color: MUTED, marginBottom: 6 }}>{active.applies}</div>
           <p style={{ fontSize: 14.5, lineHeight: 1.75, color: MUTED, margin: '0 0 4px' }}>{active.intro}</p>
-          {active.apps && (
+          {active.fromApps && apps && apps.length === 0 && (
+            <p style={{ fontSize: 14.5, color: MUTED, margin: '22px 0 6px' }}>No app policies to show yet.</p>
+          )}
+          {active.fromApps && apps && apps.length > 0 && (
             <div style={{ display: 'grid', gap: 12, margin: '22px 0 6px' }}>
-              {active.apps.map(([name, blurb, url]) => (
+              {apps.map((a) => (
                 <a
-                  key={name}
-                  href={url}
+                  key={a.id}
+                  href={a.privacy_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -231,10 +239,10 @@ export default function Legal() {
                   <span style={{
                     width: 40, height: 40, borderRadius: 10, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'linear-gradient(135deg,#22D3EE 0%,#3D6BFF 55%,#7B2FF7 100%)', color: '#fff', fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 17,
-                  }}>{name.charAt(0)}</span>
+                  }}>{a.title.charAt(0)}</span>
                   <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ display: 'block', fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 16, color: NAVY }}>{name}</span>
-                    <span style={{ display: 'block', fontSize: 13, color: MUTED, marginTop: 2 }}>{blurb}</span>
+                    <span style={{ display: 'block', fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 16, color: NAVY }}>{a.title}</span>
+                    <span style={{ display: 'block', fontSize: 13, color: MUTED, marginTop: 2 }}>{a.tagline}</span>
                   </span>
                   <span style={{ fontSize: 13.5, fontWeight: 700, color: BLUE, whiteSpace: 'nowrap' }}>Privacy policy &rarr;</span>
                 </a>
