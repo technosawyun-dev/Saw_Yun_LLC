@@ -29,7 +29,7 @@ function slugify(s) {
 
 const emptyForm = {
   title: '', slug: '', tagline: '', description: '', status: 'in_development', live_demo_url: '',
-  download_ios_url: '', download_android_url: '', download_windows_url: '', sort_order: 0,
+  download_ios_url: '', download_android_url: '', download_windows_url: '', sort_order: 1000,
   is_featured: false,
   notes_ios: '', notes_android: '', notes_web: '', notes_windows: '',
 };
@@ -285,10 +285,6 @@ export default function AdminProjectEditor() {
               </div>
             </div>
 
-            <div style={{ maxWidth: 160 }}>
-              <label style={labelStyle}>Sort order</label>
-              <input type="number" style={inputStyle} value={form.sort_order} onChange={onField('sort_order')} />
-            </div>
             {error && <div className="fade-up" style={{ fontSize: 13.5, color: '#c0392b' }}>{error}</div>}
             <div style={{ display: 'flex', gap: 10 }}>
               <button type="submit" disabled={saving} className="admin-btn admin-btn-primary" style={{ ...primaryBtnStyle, cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.7 : 1 }}>
@@ -325,7 +321,6 @@ export default function AdminProjectEditor() {
                 </ViewField>
               </div>
               <div style={{ flex: '1 1 100px' }}>
-                <ViewField label="Sort order">{form.sort_order}</ViewField>
               </div>
               <div style={{ flex: '1 1 160px' }}>
                 <ViewField label="Featured on homepage">
