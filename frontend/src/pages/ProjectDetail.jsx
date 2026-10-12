@@ -61,6 +61,9 @@ export default function ProjectDetail() {
     return <div className="detail-top-dev" style={{ color: MUTED }}>Loading…</div>;
   }
 
+  const isApp = project.kind === 'app';
+  const backPath = isApp ? '/apps' : '/projects';
+  const backLabel = isApp ? '← All apps' : '← All projects';
   const isLiveDemo = project.status === 'live_demo';
   const isShipped = project.status === 'live' || isLiveDemo;
   const availablePlatforms = PLATFORMS.filter((pl) => project.screenshots.some((s) => s.platform === pl.key));
@@ -75,7 +78,7 @@ export default function ProjectDetail() {
     <div data-screen-label="Project detail" className="fade-up">
       {isShipped ? (
         <div className="detail-top-live">
-          <button onClick={() => navigate('/projects')} style={{ background: 'none', border: 'none', padding: 0, fontSize: 14, fontWeight: 700, color: BLUE, cursor: 'pointer', fontFamily: FONT_BODY, display: 'inline-flex', alignItems: 'center', gap: 6 }}>← All projects</button>
+          <button onClick={() => navigate(backPath)} style={{ background: 'none', border: 'none', padding: 0, fontSize: 14, fontWeight: 700, color: BLUE, cursor: 'pointer', fontFamily: FONT_BODY, display: 'inline-flex', alignItems: 'center', gap: 6 }}>{backLabel}</button>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 8, marginTop: 24 }}>
             <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 26, letterSpacing: -0.5, margin: 0, color: NAVY }}>{project.title}</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -96,6 +99,14 @@ export default function ProjectDetail() {
             </div>
           </div>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: MUTED, maxWidth: 720, margin: '10px 0 32px' }}>{project.description}</p>
+
+          {project.privacy_url && (
+            <div style={{ margin: '-14px 0 28px' }}>
+              <a href={project.privacy_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
+                Privacy policy for {project.title} &rarr;
+              </a>
+            </div>
+          )}
 
           {availablePlatforms.length > 1 && (
             <div style={{ display: 'flex', gap: 10, marginBottom: 32, flexWrap: 'wrap' }}>
@@ -133,6 +144,25 @@ export default function ProjectDetail() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   Open Web App
                 </a>
+              ) : downloadUrl && downloadUrl.includes('play.google.com') ? (
+                <a
+                  href={downloadUrl} target="_blank" rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 10, marginTop: 8, padding: '9px 20px 9px 16px',
+                    borderRadius: 10, background: '#0B1220', color: '#fff', textDecoration: 'none', fontFamily: FONT_BODY,
+                  }}
+                >
+                  <svg width="22" height="24" viewBox="0 0 22 24" fill="none">
+                    <path d="M1 1.2L12 12L1 22.8Z" fill="#22D3EE" />
+                    <path d="M1 1.2L16 9.4L12 12Z" fill="#7B2FF7" />
+                    <path d="M1 22.8L16 14.6L12 12Z" fill="#3D6BFF" />
+                    <path d="M16 9.4L21 12L16 14.6L12 12Z" fill="#FACC15" />
+                  </svg>
+                  <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+                    <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 0.6, opacity: 0.8 }}>GET IT ON</span>
+                    <span style={{ fontSize: 16, fontWeight: 700 }}>Google Play</span>
+                  </span>
+                </a>
               ) : downloadUrl ? (
                 <a
                   href={downloadUrl} target="_blank" rel="noopener noreferrer"
@@ -165,7 +195,7 @@ export default function ProjectDetail() {
         </div>
       ) : (
         <div className="detail-top-dev">
-          <button onClick={() => navigate('/projects')} style={{ background: 'none', border: 'none', padding: 0, fontSize: 14, fontWeight: 700, color: BLUE, cursor: 'pointer', fontFamily: FONT_BODY, display: 'inline-flex', alignItems: 'center', gap: 6 }}>← All projects</button>
+          <button onClick={() => navigate(backPath)} style={{ background: 'none', border: 'none', padding: 0, fontSize: 14, fontWeight: 700, color: BLUE, cursor: 'pointer', fontFamily: FONT_BODY, display: 'inline-flex', alignItems: 'center', gap: 6 }}>{backLabel}</button>
           <div style={{ marginTop: 24 }}>
             <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: 0.5, color: VIOLET, background: 'rgba(123,47,247,0.1)', padding: '5px 10px', borderRadius: 100 }}>IN DEVELOPMENT</span>
             <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 28, letterSpacing: -0.5, margin: '14px 0 16px', color: NAVY }}>{project.title}</h2>

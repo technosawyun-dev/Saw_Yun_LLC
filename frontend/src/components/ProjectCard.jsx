@@ -28,7 +28,7 @@ export default function ProjectCard({ project }) {
       style={hover ? { ...cardStyle, ...cardHoverStyle } : cardStyle}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={() => navigate(`/projects/${project.slug}`)}
+      onClick={() => navigate(`/${project.kind === 'app' ? 'apps' : 'projects'}/${project.slug}`)}
     >
       <div style={isShipped ? thumbStyle : devThumbStyle}>
         {isShipped && project.cover_image_url ? (
@@ -67,7 +67,15 @@ export default function ProjectCard({ project }) {
         </div>
         <div style={{ fontSize: 14, lineHeight: 1.6, color: MUTED, marginBottom: 18 }}>{project.tagline}</div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 13.5, fontWeight: 700, color: NAVY }}>View details →</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 13.5, fontWeight: 700, color: NAVY }}>View details →</span>
+            {project.on_google_play && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: '#0f7a43', background: 'rgba(15,122,67,0.1)', padding: '4px 9px', borderRadius: 100, whiteSpace: 'nowrap' }}>
+                <svg width="10" height="11" viewBox="0 0 10 11"><path d="M0 0.4L6 5.5L0 10.6Z" fill="currentColor" /></svg>
+                Google Play
+              </span>
+            )}
+          </span>
           {project.live_demo_url && (
             <a
               href={project.live_demo_url}

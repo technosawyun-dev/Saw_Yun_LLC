@@ -6,6 +6,7 @@ import { NAVY, BG, FONT_HEAD } from '../../styles/theme';
 const NAV = [
   { to: '/admin', label: 'Dashboard', end: true },
   { to: '/admin/projects', label: 'Projects' },
+  { to: '/admin/apps', label: 'Play Store Apps' },
   { to: '/admin/messages', label: 'Messages' },
   { to: '/admin/settings', label: 'Settings' },
 ];

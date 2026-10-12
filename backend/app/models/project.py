@@ -11,6 +11,8 @@ class Project(Base):
     title = Column(String, nullable=False)
     tagline = Column(String, nullable=True)
     description = Column(Text, nullable=True)
+    # project = custom work shown on Projects; app = a store app shown on Apps.
+    kind = Column(String, nullable=False, default="project", server_default="project")
     status = Column(String, nullable=False, default="in_development")  # live|live_demo|in_development
     live_demo_url = Column(String, nullable=True)
     # Optional per-platform download links — each shows a "Download" button
@@ -19,6 +21,8 @@ class Project(Base):
     download_ios_url = Column(String, nullable=True)
     download_android_url = Column(String, nullable=True)
     download_windows_url = Column(String, nullable=True)
+    # Link to this app's own privacy policy page (shown on the project page).
+    privacy_url = Column(String, nullable=True)
     # "Built for <platform>" bullet notes shown on the project detail page,
     # one line per bullet. Null/blank falls back to the default copy in the
     # frontend's PLATFORM_NOTES.

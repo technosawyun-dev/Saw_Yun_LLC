@@ -8,10 +8,12 @@ const cardStyle = { background: '#fff', border: `1px solid ${LINE}`, borderRadiu
 
 export default function AdminDashboard() {
   const [projects, setProjects] = useState(null);
+  const [apps, setApps] = useState(null);
   const [messages, setMessages] = useState(null);
 
   useEffect(() => {
-    listProjects().then(setProjects).catch(() => setProjects([]));
+    listProjects('project').then(setProjects).catch(() => setProjects([]));
+    listProjects('app').then(setApps).catch(() => setApps([]));
     listMessages().then(setMessages).catch(() => setMessages([]));
   }, []);
 
@@ -24,6 +26,10 @@ export default function AdminDashboard() {
         <div style={cardStyle} className="hoverable-card">
           <div style={{ fontSize: 12.5, fontWeight: 700, color: MUTED, marginBottom: 6 }}>PROJECTS</div>
           <div style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 28, color: NAVY }}>{projects === null ? '…' : projects.length}</div>
+        </div>
+        <div style={cardStyle} className="hoverable-card">
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: MUTED, marginBottom: 6 }}>PLAY STORE APPS</div>
+          <div style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 28, color: NAVY }}>{apps === null ? '…' : apps.length}</div>
         </div>
         <div style={cardStyle} className="hoverable-card">
           <div style={{ fontSize: 12.5, fontWeight: 700, color: MUTED, marginBottom: 6 }}>UNREAD MESSAGES</div>

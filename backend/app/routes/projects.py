@@ -1,3 +1,4 @@
+from typing import Optional, Literal
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session, joinedload
 from app.db.session import get_db
@@ -24,20 +25,21 @@ def _clear_other_featured(db: Session, keep_id: int | None = None) -> None:
 def _to_summary(project: Project) -> ProjectSummaryOut:
     cover = project.screenshots[0].image_url if project.screenshots else None
     return ProjectSummaryOut(
-        id=project.id, slug=project.slug, title=project.title, tagline=project.tagline,
+        id=project.id, slug=project.slug, title=project.title, tagline=project.tagline, kind=project.kind,
         status=project.status, live_demo_url=project.live_demo_url, sort_order=project.sort_order,
         is_featured=project.is_featured, cover_image_url=cover,
+        on_google_play="play.google.com" in (project.download_android_url or ""),
     )
 
 
 # Public
 
 @router.get("/api/projects", response_model=list[ProjectSummaryOut])
-def list_projects(db: Session = Depends(get_db)):
-    projects = (
-        db.query(Project).options(joinedload(Project.screenshots))
-        .order_by(Project.sort_order.asc(), Project.created_at.desc()).all()
-    )
+def list_projects(kind: Optional[Literal["project", "app"]] = None, db: Session = Depends(get_db)):
+    query = db.query(Project).options(joinedload(Project.screenshots))
+    if kind:
+        query = query.filter(Project.kind == kind)
+    projects = query.order_by(Project.sort_order.asc(), Project.created_at.desc()).all()
     return [_to_summary(p) for p in projects]
 
 

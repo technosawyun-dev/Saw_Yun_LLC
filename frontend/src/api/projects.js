@@ -1,6 +1,7 @@
 import client from './client';
 
-export const listProjects = () => client.get('/api/projects').then((r) => r.data);
+export const listProjects = (kind) =>
+  client.get('/api/projects', { params: kind ? { kind } : {} }).then((r) => r.data);
 
 export const getProject = (slug) => client.get(`/api/projects/${slug}`).then((r) => r.data);
 
