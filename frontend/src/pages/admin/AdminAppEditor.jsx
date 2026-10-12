@@ -131,8 +131,9 @@ export default function AdminAppEditor() {
           <input style={inputStyle} value={form.tagline} onChange={onField('tagline')} placeholder="One line about what the app does" />
         </div>
         <div>
-          <label style={labelStyle}>About the app (optional)</label>
-          <textarea style={{ ...inputStyle, resize: 'vertical' }} rows={4} value={form.description} onChange={onField('description')} placeholder="A few sentences shown on the app page" />
+          <label style={labelStyle}>About the app (optional, one point per line)</label>
+          <textarea style={{ ...inputStyle, resize: 'vertical' }} rows={4} value={form.description} onChange={onField('description')} placeholder={'Track income and expenses\nWorks offline\nBackup to Google Drive'} />
+          <div style={hintStyle}>Each line becomes one bullet point on the app page.</div>
         </div>
         <div>
           <label style={labelStyle}>Google Play link</label>
