@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listProjects, deleteProject } from '../../api/projects';
+import useDragReorder from '../../components/admin/useDragReorder';
+import DragGrip from '../../components/admin/DragGrip';
 import { NAVY, MUTED, BLUE, VIOLET, LINE, FONT_HEAD } from '../../styles/theme';
 
 export default function AdminAppsList() {
@@ -10,6 +12,8 @@ export default function AdminAppsList() {
   const load = () => listProjects('app').then(setApps).catch(() => setError('Could not load apps.'));
 
   useEffect(() => { load(); }, []);
+
+  const { dragId, rowProps } = useDragReorder(apps || [], setApps, load, setError);
 
   const onDelete = async (a) => {
     if (!window.confirm(`Delete "${a.title}"? This also removes its screenshot. This cannot be undone.`)) return;
@@ -24,18 +28,23 @@ export default function AdminAppsList() {
         <Link to="/admin/apps/new" className="admin-btn admin-btn-primary" style={{ padding: '10px 18px', borderRadius: 10, background: NAVY, color: '#fff', fontWeight: 700, fontSize: 13.5, textDecoration: 'none' }}>+ New app</Link>
       </div>
 
-      {error && <div style={{ color: MUTED }}>{error}</div>}
-      {!error && !apps && <div style={{ color: MUTED }}>Loading…</div>}
-      {!error && apps && apps.length === 0 && <div style={{ color: MUTED }}>No apps yet. Add your first one.</div>}
+      {error && <div style={{ color: MUTED, marginBottom: 12 }}>{error}</div>}
+      {!apps && !error && <div style={{ color: MUTED }}>Loading…</div>}
+      {apps && apps.length === 0 && <div style={{ color: MUTED }}>No apps yet. Add your first one.</div>}
 
-      {!error && apps && apps.length > 0 && (
+      {apps && apps.length > 1 && (
+        <div style={{ fontSize: 13, color: MUTED, marginBottom: 12 }}>Drag a row up or down to change the order on the website. It saves by itself.</div>
+      )}
+      {apps && apps.length > 0 && (
         <div style={{ background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, overflow: 'hidden' }}>
           {apps.map((a, i) => (
-            <div key={a.id} style={{
+            <div key={a.id} {...rowProps(a.id)} style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
               padding: '16px 20px', borderTop: i === 0 ? 'none' : `1px solid ${LINE}`,
+              cursor: 'grab', background: dragId === a.id ? 'rgba(61,107,255,0.07)' : '#fff', opacity: dragId === a.id ? 0.7 : 1,
             }}>
-              <div>
+              <DragGrip />
+              <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 700, fontSize: 15, color: NAVY }}>{a.title}</div>
                 <div style={{ fontSize: 12.5, color: MUTED, marginTop: 2 }}>{a.on_google_play ? 'Google Play link added' : 'No Google Play link yet'}</div>
               </div>

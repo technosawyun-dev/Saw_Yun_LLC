@@ -22,7 +22,7 @@ const primaryBtnStyle = {
 const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 const emptyForm = {
-  title: '', slug: '', tagline: '', description: '', status: 'live', download_android_url: '', privacy_url: '', sort_order: 0,
+  title: '', slug: '', tagline: '', description: '', status: 'live', download_android_url: '', privacy_url: '',
 };
 
 // A store app only needs a few fields. Everything project-specific (iOS/Windows links, live demo,
@@ -49,7 +49,7 @@ export default function AdminAppEditor() {
         setForm({
           title: p.title, slug: p.slug, tagline: p.tagline || '', description: p.description || '',
           status: p.status === 'live' ? 'live' : 'in_development',
-          download_android_url: p.download_android_url || '', privacy_url: p.privacy_url || '', sort_order: p.sort_order,
+          download_android_url: p.download_android_url || '', privacy_url: p.privacy_url || '',
         });
         setShot(p.screenshots.find((s) => s.platform === 'android') || null);
       })
@@ -77,11 +77,11 @@ export default function AdminAppEditor() {
       status: form.status,
       download_android_url: form.download_android_url || null,
       privacy_url: form.privacy_url || null,
-      sort_order: Number(form.sort_order) || 0,
     };
     try {
       if (isNew) {
-        const created = await createProject(body);
+        // new apps go to the end of the list; reorder by dragging in the apps list
+        const created = await createProject({ ...body, sort_order: 1000 });
         navigate(`/admin/apps/${created.id}`, { replace: true });
       } else {
         await updateProject(id, body);
@@ -151,10 +151,6 @@ export default function AdminAppEditor() {
               <option value="live">Live on Google Play</option>
               <option value="in_development">Coming soon</option>
             </select>
-          </div>
-          <div style={{ flex: '1 1 120px' }}>
-            <label style={labelStyle}>Order (small number first)</label>
-            <input type="number" style={inputStyle} value={form.sort_order} onChange={onField('sort_order')} />
           </div>
         </div>
         {error && <div style={{ color: '#c0392b', fontSize: 13.5 }}>{error}</div>}
