@@ -85,7 +85,11 @@ export default function ProjectDetail() {
           <div style={{ marginTop: 28 }}><AppIcon src={project.screenshots[0]?.image_url} name={project.title} size={132} /></div>
           <h1 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 'clamp(28px, 6vw, 40px)', letterSpacing: -0.8, margin: '28px 0 10px', color: NAVY }}>{project.title}</h1>
           {project.tagline && <p style={{ fontSize: 17, lineHeight: 1.6, color: MUTED, margin: '0 0 8px', maxWidth: 560 }}>{project.tagline}</p>}
-          {project.description && <p style={{ fontSize: 15, lineHeight: 1.75, color: MUTED, margin: '8px 0 0', maxWidth: 600 }}>{project.description}</p>}
+          {project.description && (
+            <ul className="app-points">
+              {project.description.split('\n').map((l) => l.trim().replace(/^[-*•]\s*/, '')).filter(Boolean).map((l, i) => <li key={i}>{l}</li>)}
+            </ul>
+          )}
           <div className="app-hero-links" style={{ marginTop: 32 }}>
             {isShipped && playUrl ? <GooglePlayButton href={playUrl} size="lg" /> : (
               <span style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.5, color: VIOLET, background: 'rgba(123,47,247,0.1)', padding: '10px 18px', borderRadius: 100 }}>COMING SOON</span>
