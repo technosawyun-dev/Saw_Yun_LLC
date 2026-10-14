@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import PublicLayout from './components/PublicLayout';
 import Home from './pages/Home';
@@ -54,6 +54,10 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/legal/:doc" element={<Legal />} />
+          {/* short links people and stores use; the server redirects too (vercel.json), this covers in-app navigation */}
+          <Route path="/privacy" element={<Navigate to="/legal/privacy" replace />} />
+          <Route path="/privacy-policy" element={<Navigate to="/legal/privacy" replace />} />
+          <Route path="/terms" element={<Navigate to="/legal/terms" replace />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
