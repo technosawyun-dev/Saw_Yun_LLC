@@ -181,3 +181,20 @@ img { max-width: 100%; }
 }
 .modal-overlay { animation: overlayFadeIn 0.18s ease both; }
 .modal-panel { animation: modalPopIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Apps: logo + Google Play cards */
+.apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+.app-card { display: flex; flex-direction: column; align-items: flex-start; padding: 28px; transition: transform .25s ease, box-shadow .25s ease; }
+.app-card:hover, .app-card:focus-visible { transform: translateY(-6px); box-shadow: 0 24px 44px -24px rgba(11,18,32,0.22); outline: none; }
+.gp-btn { transition: transform .2s ease, box-shadow .2s ease; box-shadow: 0 10px 16px -8px rgba(11,18,32,0.4), 0 0 0 1px rgba(11,18,32,0.05); }
+.gp-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 24px -10px rgba(11,18,32,0.45), 0 0 0 1px rgba(11,18,32,0.06); }
+.app-hero { max-width: 760px; margin: 0 auto; padding: 140px 32px 90px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.app-points { list-style: none; margin: 18px 0 0; padding: 0; max-width: 560px; width: 100%; text-align: left; }
+.app-points li { position: relative; padding-left: 26px; margin-bottom: 12px; font-size: 15px; line-height: 1.6; color: #5B6472; }
+.app-points li::before { content: ''; position: absolute; left: 4px; top: 0.6em; width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg,#22D3EE,#3D6BFF 55%,#7B2FF7); }
+.app-hero-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 24px; margin-top: 8px; }
+@media (max-width: 560px) {
+  .apps-grid { grid-template-columns: 1fr; }
+  .app-card { padding: 24px; }
+  .app-hero { padding: 112px 20px 64px; }
+}

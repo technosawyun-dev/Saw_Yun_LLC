@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { listProjects } from '../api/projects';
-import ProjectCard from '../components/ProjectCard';
+import AppCard from '../components/AppCard';
 import { NAVY, MUTED, BLUE, FONT_HEAD } from '../styles/theme';
 
 export default function Apps() {
@@ -28,8 +28,8 @@ export default function Apps() {
         {!error && !apps && <div style={{ color: MUTED, fontSize: 14.5 }}>Loading apps…</div>}
         {!error && apps && apps.length === 0 && <div style={{ color: MUTED, fontSize: 14.5 }}>No apps to show yet — check back soon.</div>}
         {!error && apps && apps.length > 0 && (
-          <div className="projects-grid">
-            {apps.map((p) => <ProjectCard key={p.id} project={p} />)}
+          <div className="apps-grid">
+            {apps.map((p) => <AppCard key={p.id} project={p} />)}
           </div>
         )}
       </div>
