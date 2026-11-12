@@ -15,10 +15,14 @@ jobs:
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
+          # Production backend runs on "Appbox: Company ubuntu" (moved from the
+          # Business VPS on 2026-11-12). VPS_HOST = ubuntuinhouse.sawyuntech.appboxes.co
           host: ${{ secrets.VPS_HOST }}
-          username: root
+          port: 10415
+          username: appbox
           key: ${{ secrets.VPS_DEPLOY_KEY }}
           # VPS_DEPLOY_KEY is restricted server-side (authorized_keys forced
-          # command) to only ever run deploy.sh, regardless of what's sent
-          # here — this script value is unused but required by the action.
-          script: /home/Saw_Yun_LLC/deploy.sh
+          # command) to only ever run /home/appbox/sawyun-llc/ci-deploy.sh,
+          # regardless of what's sent here — this script value is unused but
+          # required by the action.
+          script: /home/appbox/sawyun-llc/ci-deploy.sh
