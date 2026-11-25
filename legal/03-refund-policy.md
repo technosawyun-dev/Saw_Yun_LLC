@@ -2,7 +2,7 @@
 
 **Saw Yun LLC**
 Effective Date: July 20, 2026
-Last Updated: September 27, 2026
+Last Updated: November 25, 2026
 
 This Refund Policy applies to all products and services offered by Saw Yun LLC ("Saw Yun," "we," "us," "our"), current and future, unless a specific product states otherwise at the time of purchase.
 
@@ -15,6 +15,7 @@ Where a Desktop Software Product is licensed under a one-time, lifetime license 
 **Exceptions.** We will consider a refund in the following cases:
 
 - **Duplicate payment** — you were charged more than once for the same license.
+- **Pre-activation request** — you ask for a refund within seven (7) days of payment and before the license has been activated.
 - **Failed activation** — the software could not be activated due to a fault on our end, and the issue could not be resolved.
 - **Required by law** — applicable consumer protection law entitles you to a refund.
 - **Case-by-case administrative approval** — other circumstances reviewed and approved at our discretion.
@@ -28,11 +29,20 @@ Products billed on a recurring subscription basis — whether a SaaS Product or 
 - **No refunds for unused periods.** If you cancel or downgrade mid-cycle, you will not receive a prorated or partial refund for the remaining time in your current billing period.
 - **Cancellation stops future renewals only.** Canceling a subscription prevents future charges but does not retroactively refund amounts already paid. You retain access to paid features through the end of the period you've already paid for.
 
-## 3. Free Trials
+## 3. Custom Software Projects
+
+Custom software projects are priced and paid under a written quotation and a signed project agreement, usually in milestone payments. For these projects:
+
+- **Project-start payment (40%).** If we have not started work, the start payment is refundable. Once work has started, it is non-refundable, subject to mandatory law and the signed project agreement.
+- **Other payments.** Later milestone payments, the optional source-code package, and any maintenance or change-request fees are governed by the signed quotation and project agreement.
+
+If the signed project agreement conflicts with this section, the signed project agreement applies to that project.
+
+## 4. Free Trials
 
 Free trial programs (currently a 30-day trial and a 45-day referral trial) do not require payment during the trial period, so no refund applies to trial usage. If you do not cancel before a trial converts to a paid subscription (where applicable), standard subscription billing and refund rules apply from that point forward.
 
-## 4. How to Request a Refund
+## 5. How to Request a Refund
 
 To request a refund, email admin@sawyuntech.com with:
 
@@ -43,15 +53,15 @@ To request a refund, email admin@sawyuntech.com with:
 
 We review refund requests on a case-by-case basis and may request additional information or manual verification before approving a refund.
 
-## 5. Disputes & Chargebacks
+## 6. Disputes & Chargebacks
 
 Before filing a payment dispute or chargeback with your bank or payment provider, please contact us at admin@sawyuntech.com so we can attempt to resolve the issue directly. Filing an unauthorized or fraudulent chargeback may result in suspension or termination of your account and access to the Services.
 
-## 6. Changes to This Policy
+## 7. Changes to This Policy
 
 We may update this Refund Policy from time to time. Material changes will be communicated via email or notice within the Services. The policy in effect at the time of your purchase governs that transaction, unless we are required by law to apply an updated policy retroactively.
 
-## 7. Contact
+## 8. Contact
 
 - Billing & refund requests: admin@sawyuntech.com
 - General support: support@sawyuntech.com
